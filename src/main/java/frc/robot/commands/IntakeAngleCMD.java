@@ -1,12 +1,6 @@
 package frc.robot.commands;
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.Inches;
-
-import java.util.function.Supplier;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command; 
-import edu.wpi.first.units.measure.*;
-import edu.wpi.first.units.Units.*;
 
 public class IntakeAngleCMD extends Command {
     private IntakeAngle intake; 
@@ -33,7 +27,7 @@ public class IntakeAngleCMD extends Command {
 
     @Override
     public boolean isFinished() {
-        return false; 
+        return true; 
     }
 
     

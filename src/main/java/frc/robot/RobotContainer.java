@@ -43,8 +43,10 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     
+    // subsystems
     public final Intaker intaker = new Intaker();
-    public final IntakeAngle intakeAngle = new IntakeAngle(); 
+    public final IntakeAngle intakeAngle = new IntakeAngle();
+    public final Crossbow crossbow = new Crossbow();
 
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
@@ -56,6 +58,10 @@ public class RobotContainer {
             () -> operator.getRawAxis(1)
         ));
 
+        crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
+            () -> operator.getRawAxis(5)
+        ));
+
         configureBindings();
     }
 
@@ -63,7 +69,10 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         new JoystickButton(driver, 6).toggleOnTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)); 
-        new JoystickButton(driver, 4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
+        new JoystickButton(driver,
+         4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
+        new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
+        new JoystickButton(driver, 0).toggleOnTrue(new CrossbowCMD(crossbow, false));
 
 
         drivetrain.setDefaultCommand(

@@ -1,5 +1,4 @@
 package frc.robot.commands;
-import java.util.function.Supplier;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command; 
 public class IntakeCMD extends Command {
