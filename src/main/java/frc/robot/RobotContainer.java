@@ -15,16 +15,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.IntakeCMD;
-import frc.robot.commands.SwerveSlowMode;
+import frc.robot.commands.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Intaker;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.Constants.OperatorConstants;;
 
 public class RobotContainer {
     public static double speed = 1;
+
+    public boolean goLower = true;
+
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -41,7 +43,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     
-    public final Intaker intaker = new Intaker(); 
+    public final Intaker intaker = new Intaker();
+    public final IntakeAngle intakeAngle = new IntakeAngle(); 
 
     private final Joystick driver = new Joystick(0); 
 
@@ -54,6 +57,9 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         new JoystickButton(driver, 6).toggleOnTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)); 
+        new JoystickButton(driver, 4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
+
+
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->

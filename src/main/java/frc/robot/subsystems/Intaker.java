@@ -19,5 +19,4 @@ public class Intaker extends SubsystemBase {
         intakeMotor.set(motorSpeed);
     }
 
-    
 }
