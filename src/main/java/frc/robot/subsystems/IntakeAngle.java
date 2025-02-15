@@ -30,6 +30,10 @@ public class IntakeAngle extends SubsystemBase {
         this.position = Degrees.of(OperatorConstants.intakeAngle);
     }
 
+    public void setSpeed(double speed) {
+        intakeAngleMotor.set(speed);
+    }
+
     @Override
     public void periodic() {
         intakeAngleMotor.setPosition(position);

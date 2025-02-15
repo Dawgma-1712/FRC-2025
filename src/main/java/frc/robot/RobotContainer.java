@@ -47,9 +47,15 @@ public class RobotContainer {
     public final IntakeAngle intakeAngle = new IntakeAngle(); 
 
     private final Joystick driver = new Joystick(0); 
+    private final Joystick operator = new Joystick(1);
 
 
     public RobotContainer() {
+
+        intakeAngle.setDefaultCommand(new ManualAngleCMD(intakeAngle,
+            () -> operator.getRawAxis(1)
+        ));
+
         configureBindings();
     }
 
