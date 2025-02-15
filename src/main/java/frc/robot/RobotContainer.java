@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.SwerveSlowMode;
 import frc.robot.generated.TunerConstants;
@@ -47,8 +46,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(Math.abs(-joystick.getLeftY()) > 0.2 ? -joystick.getLeftY() * MaxSpeed * 0.3 : 0) // Drive forward with negative Y (forward)
-                    .withVelocityY(Math.abs(-joystick.getLeftX()) > 0.2 ? -joystick.getLeftX() * MaxSpeed * 0.3 : 0) // Drive left with negative X (left)
+                drive.withVelocityX(Math.abs(-joystick.getLeftY()) > 0.2 ? -joystick.getLeftY() * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
+                    .withVelocityY(Math.abs(-joystick.getLeftX()) > 0.2 ? -joystick.getLeftX() * MaxSpeed * speed : 0) // Drive left with negative X (left)
                     .withRotationalRate(Math.abs(-joystick.getRightX() * MaxAngularRate) > 0.05 ? -joystick.getRightX() * MaxAngularRate : 0) // Drive counterclockwise with negative X (left)
             )
         );
