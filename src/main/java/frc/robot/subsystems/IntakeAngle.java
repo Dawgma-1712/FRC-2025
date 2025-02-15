@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Degrees;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -13,9 +14,18 @@ import edu.wpi.first.units.Unit.*;
 public class IntakeAngle extends SubsystemBase {
     private final TalonFX intakeAngleMotor = new TalonFX(13);
     private Angle position;
-    
+
+    Orchestra m_orchestra = new Orchestra();
+
     public IntakeAngle() {
         this.position = Degrees.of(0);
+
+        // Add a single device to the orchestra
+        m_orchestra.addInstrument(intakeAngleMotor);
+
+        // Attempt to load the chrp
+        var status = m_orchestra.loadMusic("output.chrp");
+        m_orchestra.play();
     }
 
     public void stop() {
@@ -28,10 +38,6 @@ public class IntakeAngle extends SubsystemBase {
 
     public void setIntake() {
         this.position = Degrees.of(OperatorConstants.intakeAngle);
-    }
-
-    public void setSpeed(double speed) {
-        intakeAngleMotor.set(speed);
     }
 
     @Override
