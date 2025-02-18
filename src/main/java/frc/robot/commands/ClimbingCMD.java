@@ -18,7 +18,7 @@ public class ClimbingCMD extends Command {
 
     @Override
     public void execute() {
-        climbing.setClimber(angle);
+        climbing.setClimber(angle * 45);
     }
 
     @Override
@@ -29,5 +29,5 @@ public class ClimbingCMD extends Command {
         return true; 
     }
 
-    
+
 } 
