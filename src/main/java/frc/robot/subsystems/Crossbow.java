@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import frc.Constants.OperatorConstants;
 
+
 public class Crossbow extends SubsystemBase {
     
     private final SparkMax crossbowMotor = new SparkMax(15, MotorType.kBrushless);
