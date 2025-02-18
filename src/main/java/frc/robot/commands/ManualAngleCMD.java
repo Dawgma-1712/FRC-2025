@@ -16,6 +16,7 @@ public class ManualAngleCMD extends Command {
 
     @Override
     public void execute() {
+        intakeAngle.setPosition(intakeAngle.getPosition().magnitude() + motorSpeed.get());
     }
 
     @Override

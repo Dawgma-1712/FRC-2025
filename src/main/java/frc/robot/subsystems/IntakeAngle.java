@@ -29,6 +29,14 @@ public class IntakeAngle extends SubsystemBase {
         intakeAngleMotor.set(0);
     }
 
+    public void setPosition(double position) {
+        this.position = Degrees.of(position);
+    }
+
+    public Angle getPosition() {
+        return position;
+    }
+
     public void setStow() {
         this.position = Degrees.of(OperatorConstants.stowAngle);
     }
