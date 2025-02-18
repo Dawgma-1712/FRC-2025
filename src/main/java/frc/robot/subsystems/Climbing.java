@@ -10,21 +10,36 @@ import frc.Constants.OperatorConstants;
 import edu.wpi.first.units.measure.Angle;
 import static edu.wpi.first.units.Units.*;
 
+import java.lang.management.OperatingSystemMXBean;
+
 public class Climbing extends SubsystemBase{
     private final TalonFX climbingMotor1 = new TalonFX(16);
     private final TalonFX climbingMotor2 = new TalonFX(17);
 
-    private Angle position = Degrees.of(0);
+    private Angle position1, position2; 
 
+    public Climbing() {
+        this.position1 = Degree.of(0); 
+        this.position2 = Degree.of(0);
 
+    }
     public void stop(){
         climbingMotor1.set(0);
-        climbingMotor2.set(0);
+        climbingMotor2.set(0); 
     }
 
-    public void setMotors(double motorSpeed1, double motorSpeed2){
-        climbingMotor1.set(motorSpeed1);
-        climbingMotor2.set(motorSpeed2);
+    public void setClimber(double angle) {
+        this.position1 = Degree.of(angle);
+        this.position2 = Degree.of(-angle); 
     }
 
+    @Override
+    public void periodic() {
+        climbingMotor1.setPosition(position1);
+        climbingMotor2.setPosition(position2);
+    }
+    
+    public double getPosition(){
+        return position1.magnitude();
+    }
 }

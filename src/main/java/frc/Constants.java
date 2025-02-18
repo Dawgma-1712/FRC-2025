@@ -15,5 +15,10 @@ public class Constants {
         public static final double bottomCrossbow = 0;
         public static final double crossbowMarginOfError = 1;
         public static final double crossbowSpeed = 0.5;     
+        
+
+        // Climber constants
+        public static final double climberAngle = 90;
+        public static final double increaseAmount = 1;
     }
 }
