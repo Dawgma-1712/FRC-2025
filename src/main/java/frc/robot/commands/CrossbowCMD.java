@@ -11,6 +11,7 @@ public class CrossbowCMD extends Command {
     public CrossbowCMD(Crossbow crossbow, boolean high) {
         this.crossbow = crossbow;
         this.high = high;
+        addRequirements(crossbow);
     }
 
     @Override

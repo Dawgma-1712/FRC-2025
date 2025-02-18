@@ -12,7 +12,7 @@ public class ManualClimbing extends Command {
     public ManualClimbing(Climbing climb, boolean up){
         this.climb = climb;
         this.up = up;
-
+        addRequirements(climb);
     }
     @Override
     public void execute(){

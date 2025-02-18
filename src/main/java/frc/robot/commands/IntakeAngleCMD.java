@@ -8,6 +8,7 @@ public class IntakeAngleCMD extends Command {
 
     public IntakeAngleCMD(IntakeAngle intake) {
         this.intake = intake; 
+        addRequirements(intake);
     }
 
     public void initialize() {

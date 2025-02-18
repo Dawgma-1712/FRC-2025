@@ -12,6 +12,7 @@ public class ManualAngleCMD extends Command {
     public ManualAngleCMD(IntakeAngle intakeAngle, Supplier<Double> motorSpeed) {
         this.intakeAngle = intakeAngle;
         this.motorSpeed = motorSpeed;
+        addRequirements(intakeAngle);
     }
 
     @Override

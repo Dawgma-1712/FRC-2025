@@ -12,6 +12,7 @@ public class ManualCrossbowCMD extends Command {
     public ManualCrossbowCMD(Crossbow crossbow, Supplier<Double> crossbowSpeed) {
         this.crossbow = crossbow;
         this.crossbowSpeed  = crossbowSpeed;
+        addRequirements(crossbow);
     }
 
     @Override
