@@ -45,10 +45,10 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     
     // subsystems
-    public final Intaker intaker = new Intaker();
+    //public final Intaker intaker = new Intaker();
     public final IntakeAngle intakeAngle = new IntakeAngle();
-    public final Crossbow crossbow = new Crossbow();
-    public final Climbing climbing = new Climbing();
+    //public final Crossbow crossbow = new Crossbow();
+    //public final Climbing climbing = new Climbing();
 
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
@@ -57,12 +57,12 @@ public class RobotContainer {
     public RobotContainer() {
 
         intakeAngle.setDefaultCommand(new ManualAngleCMD(intakeAngle,
-            () -> operator.getRawAxis(1)
+            () -> operator.getRawAxis(2)
         ));
 
-        crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
-            () -> operator.getRawAxis(5)
-        ));
+        // crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
+        //     () -> operator.getRawAxis(5)
+        // ));
 
         configureBindings();
     }
@@ -70,15 +70,15 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        new JoystickButton(driver, 4).toggleOnTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)); 
-        new JoystickButton(driver,
-         4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
-        new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
-        new JoystickButton(driver, 0).toggleOnTrue(new CrossbowCMD(crossbow, false));
-        //climb
-        new POVButton(operator, 0).whileTrue(new ManualClimbing(climbing, true));
-        new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
-        new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
+        // new JoystickButton(driver, 4).toggleOnTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)); 
+        // new JoystickButton(driver,
+        //  4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
+        // new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
+        // new JoystickButton(driver, 0).toggleOnTrue(new CrossbowCMD(crossbow, false));
+        // //climb
+        // new POVButton(operator, 0).whileTrue(new ManualClimbing(climbing, true));
+        // new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
+        // new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
 
 
         drivetrain.setDefaultCommand(

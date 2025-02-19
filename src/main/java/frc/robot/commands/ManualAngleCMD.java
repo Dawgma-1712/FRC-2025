@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 
 public class ManualAngleCMD extends Command {
 
-    IntakeAngle intakeAngle;
-    Supplier<Double> motorSpeed;
+    private IntakeAngle intakeAngle;
+    private Supplier<Double> motorSpeed;
 
     public ManualAngleCMD(IntakeAngle intakeAngle, Supplier<Double> motorSpeed) {
         this.intakeAngle = intakeAngle;
@@ -16,8 +16,14 @@ public class ManualAngleCMD extends Command {
     }
 
     @Override
+    public void initialize() {
+        System.out.print("...WHAT AAA");
+    }
+
+    @Override
     public void execute() {
-        intakeAngle.setPosition(intakeAngle.getPosition().magnitude() + motorSpeed.get());
+        //intakeAngle.setPosition(intakeAngle.getPosition().magnitude() + motorSpeed.get());
+        intakeAngle.setSpeed(motorSpeed.get());
     }
 
     @Override
@@ -25,6 +31,7 @@ public class ManualAngleCMD extends Command {
 
     @Override
     public boolean isFinished() {
+        System.out.print("Done");
         return false;
     }
 
