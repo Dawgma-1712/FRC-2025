@@ -1,6 +1,7 @@
 package frc.robot.commands;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command; 
+
 public class IntakeCMD extends Command {
     private Intaker intaker; 
     private double motorSpd; 
@@ -11,6 +12,7 @@ public class IntakeCMD extends Command {
         addRequirements(intaker);
     }
 
+    @Override
     public void initialize() {}
 
     @Override
