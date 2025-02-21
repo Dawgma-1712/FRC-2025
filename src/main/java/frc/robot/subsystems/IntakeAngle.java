@@ -16,11 +16,9 @@ import edu.wpi.first.units.measure.Angle;
 
 public class IntakeAngle extends SubsystemBase {
     private final TalonFX armMotor = new TalonFX(25);
-    private Angle position;
+    private Angle position = Degrees.of(0);
     private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
     private final MotionMagicVoltage motionMagicControl = new MotionMagicVoltage(0);
-
-    Orchestra m_orchestra = new Orchestra();
 
     public IntakeAngle() {
         this.position = Degrees.of(0);
@@ -34,8 +32,12 @@ public class IntakeAngle extends SubsystemBase {
         this.position = Degrees.of(position);
     }
 
+    public void zeroPosition() {
+        armMotor.setPosition(0);
+    }
+
     public double getPosition() {
-        return armMotor.getPosition().getValueAsDouble();
+        return armMotor.getPosition().getValueAsDouble() * 3.6 + 10.7;
     }
 
     public void moveToPosition(double rotations) {

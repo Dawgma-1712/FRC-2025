@@ -17,7 +17,7 @@ public class IntakeCMD extends Command {
 
     @Override
     public void execute() {
-        intaker.setMotor(motorSpd);
+        intaker.setMotor(-motorSpd);
     }
 
     @Override

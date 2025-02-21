@@ -45,7 +45,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     
     // subsystems
-    //public final Intaker intaker = new Intaker();
+    public final Intaker intaker = new Intaker();
     public final IntakeAngle intakeAngle = new IntakeAngle();
     //public final Crossbow crossbow = new Crossbow();
     //public final Climbing climbing = new Climbing();
@@ -79,7 +79,7 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        // new JoystickButton(driver, 4).toggleOnTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)); 
+        new JoystickButton(driver, 4).onTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)).onFalse(new IntakeCMD(intaker, 0)); 
         // new JoystickButton(driver,
         //  4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
         // new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
@@ -89,9 +89,9 @@ public class RobotContainer {
         // new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
         // new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
 
-        //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
+        joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
 
-        //joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
         //joystick.b().whileTrue(drivetrain.applyRequest(() ->
         //    point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         //));

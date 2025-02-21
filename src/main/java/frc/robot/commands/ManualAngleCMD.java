@@ -29,6 +29,7 @@ public class ManualAngleCMD extends Command {
         System.out.println("Executing1");
         //intakeAngle.moveToPosition(intakeAngle.getPosition() + motorSpeed.get() * 0.1);
 
+        System.out.println(intakeAngle.getPosition());
         intakeAngle.setSpeed(motorSpeed.get());
     }
 
