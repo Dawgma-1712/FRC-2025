@@ -2,15 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.spark.SparkMax;
-import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import frc.Constants.OperatorConstants;
-import edu.wpi.first.units.measure.Angle;
 import static edu.wpi.first.units.Units.*;
-
-import java.lang.management.OperatingSystemMXBean;
 
 public class Climbing extends SubsystemBase{
     private final TalonFX climbingMotor1 = new TalonFX(16);

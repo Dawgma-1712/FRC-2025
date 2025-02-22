@@ -1,19 +1,11 @@
 package frc.robot.subsystems;
-import static edu.wpi.first.units.Units.Degrees;
 
-import com.ctre.phoenix6.Orchestra;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ControlModeValue;
-import com.ctre.phoenix6.*;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.Constants;
-import frc.Constants.OperatorConstants;
-import edu.wpi.first.units.measure.Angle;
 
 public class IntakeAngle extends SubsystemBase {
     private final TalonFX armMotor = new TalonFX(25);

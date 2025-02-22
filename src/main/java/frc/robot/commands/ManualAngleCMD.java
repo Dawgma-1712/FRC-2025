@@ -1,12 +1,8 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeAngle;
 import java.util.function.Supplier;
-
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.hardware.TalonFX;
 
 public class ManualAngleCMD extends Command {
 
