@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.commands.intake.ManualAngleCMD;
 import frc.robot.commands.intake.IntakeAngleCMD;
+import frc.robot.commands.crossbow.ManualCrossbowCMD;
+import frc.robot.commands.crossbow.CrossbowCMD;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.*;
@@ -54,7 +56,7 @@ public class RobotContainer {
     // subsystems
     public final Intaker intaker = new Intaker();
     public final IntakeAngle intakeAngle = new IntakeAngle();
-    //public final Crossbow crossbow = new Crossbow();
+    public final Crossbow crossbow = new Crossbow();
     //public final Climbing climbing = new Climbing();
 
     private final Joystick driver = new Joystick(0); 
@@ -76,9 +78,9 @@ public class RobotContainer {
             () -> operator.getRawAxis(1)
         ));
 
-        // crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
-        //     () -> operator.getRawAxis(5)
-        // ));
+        crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
+            () -> operator.getRawAxis(5)
+        ));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -92,8 +94,8 @@ public class RobotContainer {
         //new JoystickButton(driver, 4).onTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)).onFalse(new IntakeCMD(intaker, 0)); 
         new JoystickButton(driver,
          4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
-        // new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
-        // new JoystickButton(driver, 0).toggleOnTrue(new CrossbowCMD(crossbow, false));
+        new JoystickButton(driver, 4).toggleOnTrue(new CrossbowCMD(crossbow, true));
+        new JoystickButton(driver, 1).toggleOnTrue(new CrossbowCMD(crossbow, false));
         // //climb
         // new POVButton(operator, 0).whileTrue(new ManualClimbing(climbing, true));
         // new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
@@ -117,8 +119,6 @@ public class RobotContainer {
         //joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //drivetrain.registerTelemetry(logger::telemeterize);
-
-        System.out.print(intakeAngle.getDefaultCommand());
     }
 
     public Command getAutonomousCommand() {
