@@ -79,9 +79,9 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        new JoystickButton(driver, 4).onTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)).onFalse(new IntakeCMD(intaker, 0)); 
-        // new JoystickButton(driver,
-        //  4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
+        //new JoystickButton(driver, 4).onTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)).onFalse(new IntakeCMD(intaker, 0)); 
+        new JoystickButton(driver,
+         4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
         // new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
         // new JoystickButton(driver, 0).toggleOnTrue(new CrossbowCMD(crossbow, false));
         // //climb

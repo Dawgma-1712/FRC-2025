@@ -16,9 +16,9 @@ public class ManualClimbing extends Command {
     }
     @Override
     public void execute(){
-        if(up){
+        if(up) {
             climb.setClimber(climb.getPosition() + OperatorConstants.increaseAmount);
-        } else{
+        } else {
             climb.setClimber(climb.getPosition() - OperatorConstants.increaseAmount);
         }
     }

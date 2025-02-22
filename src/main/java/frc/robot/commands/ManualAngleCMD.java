@@ -26,21 +26,20 @@ public class ManualAngleCMD extends Command {
     @Override
     public void execute() {
         //intakeAngle.setPosition(intakeAngle.getPosition().magnitude() + motorSpeed.get());
-        System.out.println("Executing1");
         //intakeAngle.moveToPosition(intakeAngle.getPosition() + motorSpeed.get() * 0.1);
 
-        System.out.println(intakeAngle.getPosition());
-        intakeAngle.setSpeed(motorSpeed.get());
+        // System.out.println(intakeAngle.getPosition());
+        // intakeAngle.setSpeed(motorSpeed.get());
+
+        intakeAngle.setSetpoint(intakeAngle.getPosition() + motorSpeed.get() * 10);
     }
 
     @Override
     public void end(boolean interrupted) {
-
     }
 
     @Override
     public boolean isFinished() {
-        System.out.print("Done");
         return false;
     }
 

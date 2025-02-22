@@ -5,6 +5,7 @@ import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.*;
@@ -16,12 +17,9 @@ import edu.wpi.first.units.measure.Angle;
 
 public class IntakeAngle extends SubsystemBase {
     private final TalonFX armMotor = new TalonFX(25);
-    private Angle position = Degrees.of(0);
-    private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
-    private final MotionMagicVoltage motionMagicControl = new MotionMagicVoltage(0);
+    private double desiredPosition = 0;
 
     public IntakeAngle() {
-        this.position = Degrees.of(0);
     }
 
     public void stop() {
@@ -29,7 +27,7 @@ public class IntakeAngle extends SubsystemBase {
     }
 
     public void setPosition(double position) {
-        this.position = Degrees.of(position);
+        armMotor.setPosition(position);
     }
 
     public void zeroPosition() {
@@ -37,19 +35,29 @@ public class IntakeAngle extends SubsystemBase {
     }
 
     public double getPosition() {
-        return armMotor.getPosition().getValueAsDouble() * 3.6 + 10.7;
+        return armMotor.getPosition().getValueAsDouble() * 3.6;
     }
 
-    public void moveToPosition(double rotations) {
-        armMotor.setControl(motionMagicControl.withPosition(rotations));
+    public void PIDPosition(double position) {
+        //0 is straight up
+        PositionVoltage pVoltage = new PositionVoltage(0).withSlot(0);
+        armMotor.setControl(pVoltage.withPosition(position / 3.6).withFeedForward(0));
+    }
+
+    public void moveToPosition(double position) {
+        desiredPosition = position;
     }
 
     public double getSpeed() {
         return armMotor.get();
     }
 
-    public void setStow() {
-        this.position = Degrees.of(OperatorConstants.stowAngle);
+    public double getSetpoint() {
+        return desiredPosition;
+    }
+
+    public void setSetpoint(double setpoint) {
+        desiredPosition = setpoint;
     }
 
     public void setSpeed(double speed) {
@@ -57,12 +65,12 @@ public class IntakeAngle extends SubsystemBase {
         armMotor.setControl(dCycleOut);
     }
 
-    public void setIntake() {
-        this.position = Degrees.of(OperatorConstants.intakeAngle);
-    }
-
     @Override
     public void periodic() {
-        //intakeAngleMotor.setPosition(position);
+        PIDPosition(desiredPosition);
+
+        System.out.println();
+        System.out.print(getPosition() + "a");
+        System.out.println();
     }
 }
