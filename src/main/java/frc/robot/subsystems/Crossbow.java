@@ -14,6 +14,7 @@ public class Crossbow extends SubsystemBase {
     private double desiredPosition;
 
     public Crossbow() {
+        crossbowMotor.getEncoder().setPosition(0);
         desiredPosition = 0;
     }
 
