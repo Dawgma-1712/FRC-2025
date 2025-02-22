@@ -48,8 +48,6 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
-    private final SendableChooser<Command> autoChooser;
     
     // subsystems
     public final Intaker intaker = new Intaker();
@@ -79,9 +77,6 @@ public class RobotContainer {
         crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
             () -> operator.getRawAxis(5)
         ));
-
-        autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
     }
@@ -120,7 +115,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return Commands.print("No autonomous command configured");
     }
     
 }

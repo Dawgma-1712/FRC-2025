@@ -20,7 +20,7 @@ public class ManualCrossbowCMD extends Command {
 
     @Override
     public void execute() {
-        crossbow.setSpeed(crossbowSpeed.get());
+        crossbow.setSpeed(crossbowSpeed.get() * 3);
     }
 
     @Override
