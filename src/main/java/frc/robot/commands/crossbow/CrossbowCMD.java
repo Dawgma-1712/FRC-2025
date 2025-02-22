@@ -16,6 +16,7 @@ public class CrossbowCMD extends Command {
 
     @Override
     public void initialize() {
+        // high variable allows two buttons to use the same command but set the crossbow to two different positions
         if(high) {
             crossbow.highCrossbow();
         } else {

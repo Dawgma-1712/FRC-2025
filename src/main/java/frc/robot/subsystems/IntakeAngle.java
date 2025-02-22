@@ -6,9 +6,10 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.Constants.OperatorConstants;
 
 public class IntakeAngle extends SubsystemBase {
-    private final TalonFX armMotor = new TalonFX(25);
+    private final TalonFX armMotor = new TalonFX(OperatorConstants.intakeAngleID);
     private double desiredPosition = 0;
 
     public IntakeAngle() {

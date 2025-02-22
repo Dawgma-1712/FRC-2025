@@ -21,12 +21,7 @@ public class ManualAngleCMD extends Command {
 
     @Override
     public void execute() {
-        //intakeAngle.setPosition(intakeAngle.getPosition().magnitude() + motorSpeed.get());
-        //intakeAngle.moveToPosition(intakeAngle.getPosition() + motorSpeed.get() * 0.1);
-
-        // System.out.println(intakeAngle.getPosition());
-        // intakeAngle.setSpeed(motorSpeed.get());
-
+        // updates position that the intake is trying to go to by whatever the joystick is at
         intakeAngle.setSetpoint(intakeAngle.getPosition() + motorSpeed.get() * 10);
     }
 

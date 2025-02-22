@@ -5,7 +5,7 @@ import frc.robot.subsystems.Crossbow;
 import java.util.function.Supplier;
 
 public class ManualCrossbowCMD extends Command {
-    
+    // but what about second breakfast?
     private Crossbow crossbow;
     private Supplier<Double> crossbowSpeed;
     

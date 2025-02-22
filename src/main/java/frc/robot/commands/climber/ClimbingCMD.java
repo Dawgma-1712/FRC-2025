@@ -16,6 +16,7 @@ public class ClimbingCMD extends Command {
 
     @Override
     public void execute() {
+        // gear ratio is 45:1
         climbing.setClimber(angle * 45);
     }
 

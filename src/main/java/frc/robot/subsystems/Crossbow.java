@@ -8,7 +8,7 @@ import frc.Constants.OperatorConstants;
 
 public class Crossbow extends SubsystemBase {
     
-    private final SparkMax crossbowMotor = new SparkMax(15, MotorType.kBrushless);
+    private final SparkMax crossbowMotor = new SparkMax(OperatorConstants.crossbowMotorID, MotorType.kBrushless);
 
     // in rotations
     private double desiredPosition;

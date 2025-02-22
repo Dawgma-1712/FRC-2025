@@ -4,10 +4,11 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.hardware.TalonFX;
 import static edu.wpi.first.units.Units.*;
+import frc.Constants.OperatorConstants;
 
 public class Climbing extends SubsystemBase{
-    private final TalonFX climbingMotor1 = new TalonFX(16);
-    private final TalonFX climbingMotor2 = new TalonFX(17);
+    private final TalonFX climbingMotor1 = new TalonFX(OperatorConstants.climbingMotorID1);
+    private final TalonFX climbingMotor2 = new TalonFX(OperatorConstants.climbingMotorID2);
 
     private Angle position1, position2; 
 

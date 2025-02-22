@@ -31,6 +31,7 @@ public class IntakeAngleCMD extends Command {
 
     @Override
     public boolean isFinished() {
+        // ends command if intake is within 2 rotations of target
         return Math.abs(intake.getPosition() - intake.getSetpoint()) <= 2; 
     }
 }
