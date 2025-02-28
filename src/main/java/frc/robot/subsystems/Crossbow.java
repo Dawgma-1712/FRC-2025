@@ -39,6 +39,7 @@ public class Crossbow extends SubsystemBase {
 
     public void setSpeed(double motorSpeed) {
         crossbowMotor.set(motorSpeed);
+        desiredPosition = crossbowMotor.getEncoder().getPosition()*360.0;
     }
 
     public void highCrossbow() {

@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.commands.intake.ManualAngleCMD;
 import frc.robot.commands.intake.IntakeAngleCMD;
+import frc.robot.commands.intake.IntakeCMD;
 import frc.robot.commands.crossbow.ManualCrossbowCMD;
 import frc.robot.commands.crossbow.CrossbowCMD;
 import frc.robot.generated.TunerConstants;
@@ -84,11 +85,11 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        //new JoystickButton(driver, 4).onTrue(new IntakeCMD(intaker, OperatorConstants.intakerMotorSpd)).onFalse(new IntakeCMD(intaker, 0)); 
+        new JoystickButton(operator, 4).onTrue(new IntakeCMD(intaker, 1)).onFalse(new IntakeCMD(intaker, 0)); 
         new JoystickButton(driver,
          4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
-        new JoystickButton(driver, 4).toggleOnTrue(new CrossbowCMD(crossbow, true));
-        new JoystickButton(driver, 1).toggleOnTrue(new CrossbowCMD(crossbow, false));
+        //.new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
+        //new JoystickButton(driver, 1).toggleOnTrue(new CrossbowCMD(crossbow, false));
         // //climb
         // new POVButton(operator, 0).whileTrue(new ManualClimbing(climbing, true));
         // new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
@@ -112,6 +113,10 @@ public class RobotContainer {
         //joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    public void resetDrive() {
+        drivetrain.resetModules();
     }
 
     public Command getAutonomousCommand() {

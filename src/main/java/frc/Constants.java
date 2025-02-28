@@ -22,7 +22,7 @@ public class Constants {
         public static final double baseAngle = 0;
 
         // Crossbow constants
-        public static final double topCrossbow = 3;
+        public static final double topCrossbow = 20000;
         public static final double bottomCrossbow = 0;
         public static final double crossbowMarginOfError = 1;
         public static final double crossbowSpeed = 0.5;     

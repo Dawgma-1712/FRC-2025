@@ -63,7 +63,7 @@ public class IntakeAngle extends SubsystemBase {
         PIDPosition(desiredPosition);
 
         System.out.println();
-        System.out.print(getPosition() + "a");
+        System.out.print(getPosition() + "intake");
         System.out.println();
     }
 }
