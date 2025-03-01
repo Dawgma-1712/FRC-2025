@@ -5,14 +5,18 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.Constants.OperatorConstants;
 
 public class IntakeAngle extends SubsystemBase {
     private final TalonFX armMotor = new TalonFX(OperatorConstants.intakeAngleID);
     private double desiredPosition = 0;
+    private DigitalInput bottomSwitch = new DigitalInput(2);
+    private DigitalInput topSwitch = new DigitalInput(1);
 
     public IntakeAngle() {
+        zeroPosition();
     }
 
     public void stop() {
@@ -20,7 +24,7 @@ public class IntakeAngle extends SubsystemBase {
     }
 
     public void setPosition(double position) {
-        armMotor.setPosition(position);
+        armMotor.setPosition(position / 3.6);
     }
 
     public void zeroPosition() {
@@ -53,15 +57,23 @@ public class IntakeAngle extends SubsystemBase {
         desiredPosition = setpoint;
     }
 
-    public void setSpeed(double speed) {
-        DutyCycleOut dCycleOut = new DutyCycleOut(speed * 0.3);
-        armMotor.setControl(dCycleOut);
-    }
-
     @Override
     public void periodic() {
+          if(!topSwitch.get()) {
+              setPosition(OperatorConstants.topSwitchPosition);
+         }
+
+         if(desiredPosition <= OperatorConstants.topSwitchPosition) {
+             desiredPosition = OperatorConstants.topSwitchPosition;
+         }
+
+         else if(desiredPosition >= OperatorConstants.bottomSwitchPosition) {
+             desiredPosition = OperatorConstants.bottomSwitchPosition;
+         }
+
         PIDPosition(desiredPosition);
 
+        System.out.println(getSetpoint() + "setpoint");
         System.out.println();
         System.out.print(getPosition() + "intake");
         System.out.println();

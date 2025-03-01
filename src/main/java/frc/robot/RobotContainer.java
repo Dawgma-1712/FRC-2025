@@ -65,8 +65,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(Math.abs(-joystick.getLeftY()) > 0.2 ? -joystick.getLeftY() * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
-                    .withVelocityY(Math.abs(-joystick.getLeftX()) > 0.2 ? -joystick.getLeftX() * MaxSpeed * speed : 0) // Drive left with negative X (left)
+                drive.withVelocityX(Math.abs(-joystick.getLeftY()) > 0.2 ? joystick.getLeftY() * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
+                    .withVelocityY(Math.abs(-joystick.getLeftX()) > 0.2 ? joystick.getLeftX() * MaxSpeed * speed : 0) // Drive left with negative X (left)
                     .withRotationalRate(Math.abs(-joystick.getRightX() * MaxAngularRate) > 0.05 ? -joystick.getRightX() * MaxAngularRate : 0) // Drive counterclockwise with negative X (left)
             )
         );
@@ -85,7 +85,8 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        new JoystickButton(operator, 4).onTrue(new IntakeCMD(intaker, 1)).onFalse(new IntakeCMD(intaker, 0)); 
+        new JoystickButton(operator, 4).onTrue(new IntakeCMD(intaker, 0.6)).onFalse(new IntakeCMD(intaker, 0)); 
+        new JoystickButton(operator, 1).onTrue(new IntakeCMD(intaker, -0.6)).onFalse(new IntakeCMD(intaker, 0)); 
         new JoystickButton(driver,
          4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
         //.new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));

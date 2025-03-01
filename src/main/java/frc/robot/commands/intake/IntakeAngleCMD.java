@@ -19,9 +19,9 @@ public class IntakeAngleCMD extends Command {
     @Override
     public void execute() {
         if(stowed)
-            intake.setPosition(OperatorConstants.intakeAngle);
+            intake.setSetpoint(OperatorConstants.intakeAngle);
         else
-            intake.setPosition(OperatorConstants.stowAngle);
+            intake.setSetpoint(OperatorConstants.stowAngle);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class IntakeAngleCMD extends Command {
 
     @Override
     public boolean isFinished() {
-        // ends command if intake is within 2 rotations of target
+        // ends command if intake is within 2 degrees of target
         return Math.abs(intake.getPosition() - intake.getSetpoint()) <= 2; 
     }
 }
