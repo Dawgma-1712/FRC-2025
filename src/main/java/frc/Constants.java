@@ -33,5 +33,14 @@ public class Constants {
         // Climber constants
         public static final double climberAngle = 90;
         public static final double increaseAmount = 1;
+
+        // Auto constants
+        public static final int drive_kP = 10;
+        public static final int drive_kI = 0;
+        public static final int drive_kD = 0;
+
+        public static final int rotation_kP = 7;
+        public static final int rotation_kI = 0;
+        public static final int rotation_kD = 0;
     }
 }

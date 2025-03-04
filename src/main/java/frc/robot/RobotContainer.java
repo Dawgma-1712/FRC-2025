@@ -25,7 +25,6 @@ import frc.robot.commands.intake.ManualAngleCMD;
 import frc.robot.commands.intake.IntakeAngleCMD;
 import frc.robot.commands.intake.IntakeCMD;
 import frc.robot.commands.crossbow.ManualCrossbowCMD;
-import frc.robot.commands.crossbow.CrossbowCMD;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.*;
@@ -59,6 +58,7 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
 
+    private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
 
@@ -78,6 +78,9 @@ public class RobotContainer {
         crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
             () -> operator.getRawAxis(5)
         ));
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
     }
@@ -121,7 +124,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return autoChooser.getSelected();
     }
     
 }
