@@ -29,6 +29,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.Constants.OperatorConstants;
+import frc.robot.commands.crossbow.*;
 
 public class RobotContainer {
     public static double speed = 1;
@@ -58,7 +59,7 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
 
-    private final SendableChooser<Command> autoChooser;
+    //private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
 
@@ -79,8 +80,8 @@ public class RobotContainer {
             () -> operator.getRawAxis(5)
         ));
 
-        autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        //autoChooser = AutoBuilder.buildAutoChooser();
+        //SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
     }
@@ -92,8 +93,8 @@ public class RobotContainer {
         new JoystickButton(operator, 1).onTrue(new IntakeCMD(intaker, -0.6)).onFalse(new IntakeCMD(intaker, 0)); 
         new JoystickButton(driver,
          4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
-        //.new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
-        //new JoystickButton(driver, 1).toggleOnTrue(new CrossbowCMD(crossbow, false));
+        new JoystickButton(driver, 2).toggleOnTrue(new CrossbowCMD(crossbow, true));
+        new JoystickButton(driver, 1).toggleOnTrue(new CrossbowCMD(crossbow, false));
         // //climb
         // new POVButton(operator, 0).whileTrue(new ManualClimbing(climbing, true));
         // new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
@@ -124,7 +125,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return null;
+        //return autoChooser.getSelected();
     }
     
 }
