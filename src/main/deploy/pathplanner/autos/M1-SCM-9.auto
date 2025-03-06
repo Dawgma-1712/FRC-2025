@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "M_GetAlgaeCM"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ScoreAlgaeCM"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "MarianaFRC2025",
+  "choreoAuto": false
+}

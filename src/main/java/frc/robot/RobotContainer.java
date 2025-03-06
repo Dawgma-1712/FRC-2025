@@ -59,7 +59,7 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
 
-    //private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
 
@@ -80,8 +80,8 @@ public class RobotContainer {
             () -> operator.getRawAxis(5)
         ));
 
-        //autoChooser = AutoBuilder.buildAutoChooser();
-        //SmartDashboard.putData("Auto Chooser", autoChooser);
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
     }
@@ -125,8 +125,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return null;
-        //return autoChooser.getSelected();
+        return autoChooser.getSelected();
     }
     
 }
