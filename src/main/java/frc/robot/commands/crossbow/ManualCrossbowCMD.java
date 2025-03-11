@@ -1,5 +1,6 @@
 package frc.robot.commands.crossbow;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Crossbow;
 import java.util.function.Supplier;
@@ -20,7 +21,7 @@ public class ManualCrossbowCMD extends Command {
 
     @Override
     public void execute() {
-        crossbow.setSpeed(crossbowSpeed.get() * 3);
+        crossbow.setSpeed(crossbowSpeed.get() * 0.5);
     }
 
     @Override

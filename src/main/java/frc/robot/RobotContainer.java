@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
+import frc.robot.commands.climber.ManualClimbing;
 import frc.robot.commands.intake.ManualAngleCMD;
 import frc.robot.commands.intake.IntakeAngleCMD;
 import frc.robot.commands.intake.IntakeCMD;
@@ -46,29 +47,37 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    //private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final CommandSwerveDrivetrain drivetrain;
     
     // subsystems
     public final Intaker intaker = new Intaker();
     public final IntakeAngle intakeAngle = new IntakeAngle();
     public final Crossbow crossbow = new Crossbow();
-    //public final Climbing climbing = new Climbing();
+    public final Climbing climbing = new Climbing();
 
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
 
-    //private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        drivetrain = TunerConstants.createDrivetrain();
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(Math.abs(-joystick.getLeftY()) > 0.2 ? joystick.getLeftY() * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
-                    .withVelocityY(Math.abs(-joystick.getLeftX()) > 0.2 ? joystick.getLeftX() * MaxSpeed * speed : 0) // Drive left with negative X (left)
-                    .withRotationalRate(Math.abs(-joystick.getRightX() * MaxAngularRate) > 0.05 ? -joystick.getRightX() * MaxAngularRate : 0) // Drive counterclockwise with negative X (left)
+            drive.withVelocityX(Math.abs(-driver.getRawAxis(1)) > 0.2 ? -driver.getRawAxis(1) * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
+            .withVelocityY(Math.abs(-driver.getRawAxis(0)) > 0.2 ? -driver.getRawAxis(0) * MaxSpeed * speed : 0) // Drive left with negative X (left)
+            .withRotationalRate(Math.abs(-driver.getRawAxis(2) * MaxAngularRate) > 0.05 ? -driver.getRawAxis(2) * MaxAngularRate : 0)
+
+                // drive.withVelocityX(Math.abs(-joystick.getLeftY()) > 0.2 ? -joystick.getLeftY() * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
+                //     .withVelocityY(Math.abs(-joystick.getLeftX()) > 0.2 ? -joystick.getLeftX() * MaxSpeed * speed : 0) // Drive left with negative X (left)
+                //     .withRotationalRate(Math.abs(-joystick.getRightX() * MaxAngularRate) > 0.05 ? -joystick.getRightX() * MaxAngularRate : 0) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -76,12 +85,9 @@ public class RobotContainer {
             () -> operator.getRawAxis(1)
         ));
 
-        crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow, 
-            () -> operator.getRawAxis(5)
+        crossbow.setDefaultCommand(new ManualCrossbowCMD(crossbow,
+            () -> -operator.getRawAxis(5)
         ));
-
-        //autoChooser = AutoBuilder.buildAutoChooser();
-        //SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
     }
@@ -89,20 +95,31 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+
         new JoystickButton(operator, 4).onTrue(new IntakeCMD(intaker, 0.6)).onFalse(new IntakeCMD(intaker, 0)); 
         new JoystickButton(operator, 1).onTrue(new IntakeCMD(intaker, -0.6)).onFalse(new IntakeCMD(intaker, 0)); 
+        
         new JoystickButton(driver,
          4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
-        new JoystickButton(driver, 2).toggleOnTrue(new CrossbowCMD(crossbow, true));
-        new JoystickButton(driver, 1).toggleOnTrue(new CrossbowCMD(crossbow, false));
+        new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
+        new JoystickButton(driver, 2).toggleOnTrue(new CrossbowCMD(crossbow, false));
+
+        // new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.1)).onFalse(new ManualClimbing(climbing, false, 0));
+        // new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, false, -0.1)).onFalse(new ManualClimbing(climbing, false, 0));
         // //climb
         // new POVButton(operator, 0).whileTrue(new ManualClimbing(climbing, true));
         // new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
         // new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
 
-        joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
+        //ACTUALLY USEFUL
+        new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+        new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
 
-        joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
+        //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
+        new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
+
+        //joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
+        new JoystickButton(driver, 1).whileTrue(drivetrain.applyRequest(() -> brake));
         //joystick.b().whileTrue(drivetrain.applyRequest(() ->
         //    point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         //));
@@ -125,8 +142,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return null;
-        //return autoChooser.getSelected();
+        return autoChooser.getSelected();
     }
     
 }
