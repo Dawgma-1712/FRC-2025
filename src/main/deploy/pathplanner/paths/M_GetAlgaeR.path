@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.11,
+        "y": 4.025
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.897664473687646,
+        "y": 6.459292763157895
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.0789473684210527,
+        "y": 6.016694078947369
+      },
+      "prevControl": {
+        "x": 4.435608552631583,
+        "y": 7.642763157894737
+      },
+      "nextControl": {
+        "x": 2.0153715078501118,
+        "y": 4.741911664504186
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.963,
+        "y": 2.165
+      },
+      "prevControl": {
+        "x": 2.0301809210526316,
+        "y": 3.697861842105263
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 179.01223960036018
+  },
+  "reversed": false,
+  "folder": "MarianaFRC2025",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

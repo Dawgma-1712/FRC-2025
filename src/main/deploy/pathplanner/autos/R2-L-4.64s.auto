@@ -1,0 +1,34 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+<<<<<<< HEAD
+      "x": 0.68,
+      "y": 4.39
+=======
+      "x": 0.5047058742766133,
+      "y": 4.437457523563696
+>>>>>>> 472ee4731d60759b4fc4ec880c4e720a79ed6a50
+    },
+    "rotation": -59.43188378478624
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RLeftnoteShoot"
+          }
+        }
+      ]
+    }
+  },
+<<<<<<< HEAD
+  "folder": "Right Start",
+=======
+  "folder": "Right",
+>>>>>>> 472ee4731d60759b4fc4ec880c4e720a79ed6a50
+  "choreoAuto": false
+}

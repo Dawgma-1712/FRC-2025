@@ -61,6 +61,7 @@ public class RobotContainer {
     private final Joystick operator = new Joystick(1);
 
     private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
         drivetrain = TunerConstants.createDrivetrain();
@@ -142,6 +143,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
         return autoChooser.getSelected();
     }
     
