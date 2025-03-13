@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.090542763157895,
-        "y": 5.9878289473684205
+        "x": 5.995591233263838,
+        "y": 5.887967038532642
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.33,
-        "y": 5.439
+        "x": 5.138784246575342,
+        "y": 5.151926369863013
       },
       "prevControl": {
-        "x": 6.12860197368421,
-        "y": 5.977815789473684
+        "x": 6.154219226050756,
+        "y": 5.961023731598802
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,10 +45,10 @@
     "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": "MarianaFRC2025",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

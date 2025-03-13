@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.666,
-        "y": 5.439
+        "x": 3.831549657534247,
+        "y": 5.151926369863013
       },
       "prevControl": {
-        "x": 1.0968750000000003,
-        "y": 6.161019736842105
+        "x": 1.2624246575342473,
+        "y": 5.873946106705118
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": "MarianaFRC2025",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

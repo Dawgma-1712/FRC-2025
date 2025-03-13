@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.330427631578947,
-        "y": 2.610608552631579
+        "x": 5.123758561643836,
+        "y": 2.898073630136986
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.705345394736842,
-        "y": 1.5234769736842104
+        "x": 5.51842482709357,
+        "y": 1.8929542419915766
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 0.5515625000043634
       },
       "prevControl": {
-        "x": 5.724917763157895,
-        "y": 1.4752467105263156
+        "x": 5.869841144194778,
+        "y": 0.8385110686568218
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "MarianaFRC2025",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": -59.99999999999999

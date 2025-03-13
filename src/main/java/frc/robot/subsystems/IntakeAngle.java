@@ -6,6 +6,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.Constants.OperatorConstants;
 
@@ -70,6 +71,8 @@ public class IntakeAngle extends SubsystemBase {
          else if(desiredPosition >= OperatorConstants.bottomSwitchPosition) {
              desiredPosition = OperatorConstants.bottomSwitchPosition;
          }
+
+         SmartDashboard.putNumber("Intake Angle", getPosition());
 
         PIDPosition(desiredPosition);
     }

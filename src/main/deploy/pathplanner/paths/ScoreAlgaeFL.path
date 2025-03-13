@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.331,
-        "y": 5.439
+        "x": 5.108732876712329,
+        "y": 5.151926369863013
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.197282894736842,
-        "y": 4.78471052631579
+        "x": 6.975015771449171,
+        "y": 4.497636896178802
       },
       "isLocked": false,
       "linkedName": null
@@ -45,7 +45,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "MarianaFRC2025",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 59.99999999999999

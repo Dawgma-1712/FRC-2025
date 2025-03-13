@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 4.435608552631583,
-        "y": 7.642763157894737
+        "y": 7.642763157894738
       },
       "nextControl": {
         "x": 2.0153715078501118,
@@ -61,10 +61,10 @@
     "rotation": 179.01223960036018
   },
   "reversed": false,
-  "folder": "MarianaFRC2025",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

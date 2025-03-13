@@ -14,15 +14,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.commands.climber.ManualClimbing;
 import frc.robot.commands.intake.ManualAngleCMD;
+import frc.robot.commands.intake.SetIntakeAngleCMD;
 import frc.robot.commands.intake.IntakeAngleCMD;
 import frc.robot.commands.intake.IntakeCMD;
 import frc.robot.commands.crossbow.ManualCrossbowCMD;
@@ -61,10 +65,13 @@ public class RobotContainer {
     private final Joystick operator = new Joystick(1);
 
     private final SendableChooser<Command> autoChooser;
-    private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
         drivetrain = TunerConstants.createDrivetrain();
+
+        Command autoDereefL2Command;
+        autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle), new WaitCommand(0.5));
+        NamedCommands.registerCommand("L2Dereef", autoDereefL2Command.raceWith(new IntakeCMD(intaker, -0.6)));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -75,10 +82,6 @@ public class RobotContainer {
             drive.withVelocityX(Math.abs(-driver.getRawAxis(1)) > 0.2 ? -driver.getRawAxis(1) * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
             .withVelocityY(Math.abs(-driver.getRawAxis(0)) > 0.2 ? -driver.getRawAxis(0) * MaxSpeed * speed : 0) // Drive left with negative X (left)
             .withRotationalRate(Math.abs(-driver.getRawAxis(2) * MaxAngularRate) > 0.05 ? -driver.getRawAxis(2) * MaxAngularRate : 0)
-
-                // drive.withVelocityX(Math.abs(-joystick.getLeftY()) > 0.2 ? -joystick.getLeftY() * MaxSpeed * speed : 0) // Drive forward with negative Y (forward)
-                //     .withVelocityY(Math.abs(-joystick.getLeftX()) > 0.2 ? -joystick.getLeftX() * MaxSpeed * speed : 0) // Drive left with negative X (left)
-                //     .withRotationalRate(Math.abs(-joystick.getRightX() * MaxAngularRate) > 0.05 ? -joystick.getRightX() * MaxAngularRate : 0) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -143,7 +146,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
         return autoChooser.getSelected();
     }
     

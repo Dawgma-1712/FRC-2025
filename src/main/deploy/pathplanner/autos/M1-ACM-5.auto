@@ -9,11 +9,17 @@
           "data": {
             "pathName": "M_GetAlgaeCM"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3Dereef"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "MarianaFRC2025",
+  "folder": null,
   "choreoAuto": false
 }

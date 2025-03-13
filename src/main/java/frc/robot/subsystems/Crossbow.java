@@ -25,7 +25,6 @@ public class Crossbow extends SubsystemBase {
     @Override
     public void periodic() {
         //High position should be 8300
-        System.out.println(crossbowMotor.getEncoder().getPosition()*360.0);
 
         double crossbowDifference = crossbowMotor.getEncoder().getPosition()*360.0 - desiredPosition;
 

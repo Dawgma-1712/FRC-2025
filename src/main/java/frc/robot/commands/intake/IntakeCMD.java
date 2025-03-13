@@ -19,7 +19,8 @@ public class IntakeCMD extends Command {
     public void execute() {
         // intake direction is opposite from joystick direction
         intaker.setMotor(-motorSpd);
-    }
+        System.out.println("intaking");
+        }
 
     @Override
     public void end(boolean interrupted) {}

@@ -22,6 +22,7 @@ public class Constants {
         public static final double baseAngle = 0;
         public static final double topSwitchPosition = -20;
         public static final double bottomSwitchPosition = 59.5;
+        public static final double dereefAngle = 40;
 
         // Crossbow constants
         public static final double topCrossbow = 8000;

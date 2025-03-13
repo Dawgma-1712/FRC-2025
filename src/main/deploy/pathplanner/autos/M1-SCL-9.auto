@@ -11,15 +11,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "L2Dereef"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "ScoreAlgaeCL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "MarianaFRC2025",
+  "folder": null,
   "choreoAuto": false
 }
