@@ -19,6 +19,18 @@
         {
           "type": "path",
           "data": {
+            "pathName": "DereefCM"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractCrossbow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "ScoreAlgaeCM"
           }
         },

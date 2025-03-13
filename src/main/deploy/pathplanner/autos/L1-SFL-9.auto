@@ -19,6 +19,18 @@
         {
           "type": "path",
           "data": {
+            "pathName": "DereefFL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractCrossbow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "ScoreAlgaeFL"
           }
         },
