@@ -70,12 +70,12 @@ public class RobotContainer {
         drivetrain = TunerConstants.createDrivetrain();
 
         Command autoDereefL2Command;
-        autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle), new WaitCommand(0.5));
-        Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6), new WaitCommand(3), new IntakeCMD(intaker, 0));
+        autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle), new WaitCommand(0.5), new IntakeCMD(intaker, 0));
+        Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6), new WaitCommand(3));
         NamedCommands.registerCommand("L2Dereef", autoDereefL2Command.raceWith(intakeCommand));
 
         Command autoScoreCommand;
-        autoScoreCommand = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle), new WaitCommand(0.5));
+        autoScoreCommand = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle), new WaitCommand(1), new IntakeCMD(intaker, 0));
         NamedCommands.registerCommand("Score", autoScoreCommand.raceWith(new IntakeCMD(intaker, -0.6)));
 
         autoChooser = AutoBuilder.buildAutoChooser();
