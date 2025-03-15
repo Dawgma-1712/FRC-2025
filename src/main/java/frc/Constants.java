@@ -22,13 +22,13 @@ public class Constants {
         public static final double baseAngle = 0;
         public static final double topSwitchPosition = -20;
         public static final double bottomSwitchPosition = 59.5;
-        public static final double dereefAngle = 35;
+        public static final double dereefAngle = 25;
 
         // Crossbow constants
-        public static final double topCrossbow = 8000;
+        public static final double topCrossbow = 25;
         public static final double bottomCrossbow = 0;
         public static final double crossbowMarginOfError = 1;
-        public static final double crossbowSpeed = 0.5;
+        public static final double crossbowSpeed = 0.4;
         // Sensor IDs
         public static final int crossbowMagLimitSwitchID = 3;
         public static final int crossbowLimitSwitchID = 0;     

@@ -19,6 +19,18 @@
         {
           "type": "path",
           "data": {
+            "pathName": "DereefFR"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractCrossbow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "ScoreAlgaeFR"
           }
         },
@@ -32,6 +44,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Middle Score",
   "choreoAuto": false
 }

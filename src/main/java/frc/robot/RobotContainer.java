@@ -29,7 +29,6 @@ import frc.robot.commands.intake.ManualAngleCMD;
 import frc.robot.commands.intake.SetIntakeAngleCMD;
 import frc.robot.commands.intake.IntakeAngleCMD;
 import frc.robot.commands.intake.IntakeCMD;
-import frc.robot.commands.crossbow.ManualCrossbowCMD;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.*;
@@ -59,7 +58,7 @@ public class RobotContainer {
     public final Intaker intaker = new Intaker();
     public final IntakeAngle intakeAngle = new IntakeAngle();
     public final Crossbow crossbow = new Crossbow();
-    public final Climbing climbing = new Climbing();
+    //public final Climbing climbing = new Climbing();
 
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
@@ -70,13 +69,21 @@ public class RobotContainer {
         drivetrain = TunerConstants.createDrivetrain();
 
         Command autoDereefL2Command;
-        autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle), new WaitCommand(0.5), new IntakeCMD(intaker, 0));
-        Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6), new WaitCommand(3));
+        autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle + 10), new WaitCommand(0.5));
+        Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6).raceWith(new WaitCommand(2)), new IntakeCMD(intaker, 0));
         NamedCommands.registerCommand("L2Dereef", autoDereefL2Command.raceWith(intakeCommand));
 
         Command autoScoreCommand;
-        autoScoreCommand = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle), new WaitCommand(1), new IntakeCMD(intaker, 0));
+        autoScoreCommand = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle - 10), new WaitCommand(1));
         NamedCommands.registerCommand("Score", autoScoreCommand.raceWith(new IntakeCMD(intaker, -0.6)));
+
+        Command autoDereefL3Command;
+        autoDereefL3Command = new SequentialCommandGroup(new WaitCommand(0.5), new CrossbowPositionCMD(crossbow, 25), new SetIntakeAngleCMD(intakeAngle, 30), new WaitCommand(0.5));
+        NamedCommands.registerCommand("L3Dereef", autoDereefL3Command);
+
+        Command autoRetractCommand;
+        autoRetractCommand = new SequentialCommandGroup(new CrossbowPositionCMD(crossbow, 0), new WaitCommand(0.5));
+        NamedCommands.registerCommand("RetractCrossbow", autoRetractCommand);
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -121,11 +128,11 @@ public class RobotContainer {
         // new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
 
         //ACTUALLY USEFUL
-        new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
-        new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+        //new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+        //new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
-        new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
+        new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.15)).onFalse(new SwerveSlowMode(1));
 
         //joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
         new JoystickButton(driver, 1).whileTrue(drivetrain.applyRequest(() -> brake));

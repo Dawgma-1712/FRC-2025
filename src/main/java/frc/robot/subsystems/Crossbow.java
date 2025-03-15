@@ -24,14 +24,14 @@ public class Crossbow extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //High position should be 8300
+        //High position should be 23
 
-        double crossbowDifference = crossbowMotor.getEncoder().getPosition()*360.0 - desiredPosition;
+        double crossbowDifference = crossbowMotor.getEncoder().getPosition() - desiredPosition;
 
         if(Math.abs(crossbowDifference) < OperatorConstants.crossbowMarginOfError) {
             stop();
         } else {
-            crossbowMotor.set(crossbowDifference > 0 ? OperatorConstants.crossbowSpeed : -OperatorConstants.crossbowSpeed);
+            crossbowMotor.set(crossbowDifference < 0 ? OperatorConstants.crossbowSpeed : -OperatorConstants.crossbowSpeed);
         }
 
         if(!crossbowLimitSwitch.get()) {
@@ -39,8 +39,10 @@ public class Crossbow extends SubsystemBase {
         }
 
         if(desiredPosition < 0) {
-            desiredPosition = 5;
+            desiredPosition = 2;
         }
+
+        SmartDashboard.putNumber("Crossbow", crossbowMotor.getEncoder().getPosition());
 
     }
 
@@ -50,11 +52,15 @@ public class Crossbow extends SubsystemBase {
 
     public void setSpeed(double motorSpeed) {
         crossbowMotor.set(motorSpeed);
-        desiredPosition = crossbowMotor.getEncoder().getPosition()*360.0;
+        desiredPosition = crossbowMotor.getEncoder().getPosition();
     }
 
     public void highCrossbow() {
         desiredPosition = OperatorConstants.topCrossbow;
+    }
+
+    public void setPosition(double position) {
+        desiredPosition = position;
     }
 
     public void lowCrossbow() {

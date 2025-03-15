@@ -15,11 +15,23 @@
           "data": {
             "name": "L3Dereef"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DereefFR"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractCrossbow"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Middle Acquire",
   "choreoAuto": false
 }
