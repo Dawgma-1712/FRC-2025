@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -62,6 +61,8 @@ public class IntakeAngle extends SubsystemBase {
     public void periodic() {
           if(!topSwitch.get()) {
               setPosition(OperatorConstants.topSwitchPosition);
+         } else if(!bottomSwitch.get()) {
+            setPosition(OperatorConstants.bottomSwitchPosition);
          }
 
          if(desiredPosition <= OperatorConstants.topSwitchPosition) {
