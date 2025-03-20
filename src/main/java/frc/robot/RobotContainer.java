@@ -17,6 +17,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -58,7 +59,7 @@ public class RobotContainer {
     public final Intaker intaker = new Intaker();
     public final IntakeAngle intakeAngle = new IntakeAngle();
     public final Crossbow crossbow = new Crossbow();
-    //public final Climbing climbing = new Climbing();
+    public final Climbing climbing = new Climbing();
 
     private final Joystick driver = new Joystick(0); 
     private final Joystick operator = new Joystick(1);
@@ -66,6 +67,7 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        SmartDashboard.putNumber("Wait Time", 0);
         drivetrain = TunerConstants.createDrivetrain();
 
         Command autoDereefL2Command;
@@ -128,8 +130,8 @@ public class RobotContainer {
         // new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
 
         //ACTUALLY USEFUL
-        //new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
-        //new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+        new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+        new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
         new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.15)).onFalse(new SwerveSlowMode(1));
@@ -158,7 +160,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return new SequentialCommandGroup(new WaitCommand(SmartDashboard.getNumber("Wait Time", 0)), autoChooser.getSelected());
     }
     
 }
