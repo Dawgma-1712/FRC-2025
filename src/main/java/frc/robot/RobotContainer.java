@@ -118,9 +118,9 @@ public class RobotContainer {
         new JoystickButton(operator, 1).onTrue(new IntakeCMD(intaker, -0.6)).onFalse(new IntakeCMD(intaker, 0)); 
         
         new JoystickButton(driver,
-         4).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
-        new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
-        new JoystickButton(driver, 2).toggleOnTrue(new CrossbowCMD(crossbow, false));
+         3).toggleOnTrue(new IntakeAngleCMD(intakeAngle));
+        //new JoystickButton(driver, 3).toggleOnTrue(new CrossbowCMD(crossbow, true));
+        //new JoystickButton(driver, 2).toggleOnTrue(new CrossbowCMD(crossbow, false));
 
         // new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.1)).onFalse(new ManualClimbing(climbing, false, 0));
         // new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, false, -0.1)).onFalse(new ManualClimbing(climbing, false, 0));
@@ -130,8 +130,8 @@ public class RobotContainer {
         // new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
 
         //ACTUALLY USEFUL
-        new JoystickButton(operator, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
-        new JoystickButton(operator, 3).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+        new JoystickButton(driver, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+        new JoystickButton(driver, 4).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
         new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.15)).onFalse(new SwerveSlowMode(1));

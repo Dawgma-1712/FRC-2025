@@ -61,15 +61,14 @@ public class IntakeAngle extends SubsystemBase {
     public void periodic() {
           if(!topSwitch.get()) {
               setPosition(OperatorConstants.topSwitchPosition);
+              if(desiredPosition <= OperatorConstants.topSwitchPosition) {
+                desiredPosition = OperatorConstants.topSwitchPosition;
+              }
          } else if(!bottomSwitch.get()) {
-            setPosition(OperatorConstants.bottomSwitchPosition);
+            //setPosition(OperatorConstants.bottomSwitchPosition);
          }
 
-         if(desiredPosition <= OperatorConstants.topSwitchPosition) {
-             desiredPosition = OperatorConstants.topSwitchPosition;
-         }
-
-         else if(desiredPosition >= OperatorConstants.bottomSwitchPosition) {
+         if(!bottomSwitch.get() && desiredPosition >= OperatorConstants.bottomSwitchPosition) {
              desiredPosition = OperatorConstants.bottomSwitchPosition;
          }
 

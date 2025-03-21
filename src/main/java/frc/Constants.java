@@ -17,11 +17,12 @@ public class Constants {
 
         // Intake constants 
         public static final double intakerMotorSpd = 0.6;
-        public static final double intakeAngle = 55.0;
+        public static final double intakeAngle = 58.0;
         public static final double stowAngle = 0.0;
         public static final double baseAngle = 0;
         public static final double topSwitchPosition = -20;
         public static final double bottomSwitchPosition = 59.5;
+        public static final double maxPosition = 65;
         public static final double dereefAngle = 25;
 
         // Crossbow constants
