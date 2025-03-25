@@ -72,7 +72,7 @@ public class RobotContainer {
 
         Command autoDereefL2Command;
         autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle + 10), new WaitCommand(0.5));
-        Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6).raceWith(new WaitCommand(2)), new IntakeCMD(intaker, 0));
+        Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6).raceWith(new WaitCommand(1.5)), new IntakeCMD(intaker, 0));
         NamedCommands.registerCommand("L2Dereef", autoDereefL2Command.raceWith(intakeCommand));
 
         Command autoScoreCommand;
@@ -80,11 +80,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("Score", autoScoreCommand.raceWith(new IntakeCMD(intaker, -0.6)));
 
         Command autoDereefL3Command;
-        autoDereefL3Command = new SequentialCommandGroup(new WaitCommand(0.5), new CrossbowPositionCMD(crossbow, 25), new SetIntakeAngleCMD(intakeAngle, 30), new WaitCommand(0.5));
+        autoDereefL3Command = new SequentialCommandGroup(new WaitCommand(0.5), new CrossbowPositionCMD(crossbow, 25.5), new SetIntakeAngleCMD(intakeAngle, 30), new WaitCommand(0.5));
         NamedCommands.registerCommand("L3Dereef", autoDereefL3Command);
 
         Command autoRetractCommand;
-        autoRetractCommand = new SequentialCommandGroup(new CrossbowPositionCMD(crossbow, 0), new WaitCommand(0.5));
+        autoRetractCommand = new SequentialCommandGroup(new WaitCommand(0.5), new CrossbowPositionCMD(crossbow, 0), new WaitCommand(0.5));
         NamedCommands.registerCommand("RetractCrossbow", autoRetractCommand);
 
         autoChooser = AutoBuilder.buildAutoChooser();
