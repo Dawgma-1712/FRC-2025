@@ -7,31 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "M_GetAlgaeFM"
+            "pathName": "M_ScoreCoralM1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L2Dereef"
+            "name": "LowerIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ScoreAlgaeFM"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score"
+            "pathName": "M_ScoreCoralM2"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Working",
+  "folder": "Middle Score",
   "choreoAuto": false
 }

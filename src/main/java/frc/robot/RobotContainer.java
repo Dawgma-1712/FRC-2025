@@ -87,6 +87,10 @@ public class RobotContainer {
         autoRetractCommand = new SequentialCommandGroup(new WaitCommand(0.5), new CrossbowPositionCMD(crossbow, 0), new WaitCommand(0.5));
         NamedCommands.registerCommand("RetractCrossbow", autoRetractCommand);
 
+        Command intakeLowerCommand;
+        intakeLowerCommand = new SequentialCommandGroup(new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.coralAngle), new WaitCommand(0.5));
+        NamedCommands.registerCommand("LowerIntake", intakeLowerCommand);
+
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
