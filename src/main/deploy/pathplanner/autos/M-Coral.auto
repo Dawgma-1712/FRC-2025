@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "M_GetAlgaeFM"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralClip"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral Clip"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Middle Score",
+  "choreoAuto": false
+}

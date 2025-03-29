@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class AutoAlign extends Command{
 
-    private final double inchesMaxSpeed = 100.0;
+    private final double inchesMaxSpeed = 10.0;
     private CommandSwerveDrivetrain swerve;
     private Vision vision;
     private double xGoal, yGoal, yawGoal;
@@ -55,21 +55,34 @@ public class AutoAlign extends Command{
             double yDiff = yGoal - vision.getFieldY();
             double yawDiff = yawGoal - vision.getFieldYaw();
     
+            swerve.applyRequest(() -> drive.withVelocityX(0)
+                .withVelocityY(0)
+                .withRotationalRate(MaxAngularRate * clamp(yawDiff/inchesMaxSpeed, -1, 1))
+                ).schedule();
             //If it's too slow, try logarithmic function
-            swerve.applyRequest(() -> drive.withVelocityX(clamp(xDiff/inchesMaxSpeed, -1, 1))
-                .withVelocityY(clamp(yDiff/inchesMaxSpeed, -1, 1))
-                .withRotationalRate(clamp(yawDiff/inchesMaxSpeed, -1, 1))
-                );
+            // swerve.applyRequest(() -> drive.withVelocityX(MaxSpeed * clamp(xDiff/inchesMaxSpeed, -1, 1))
+            //     .withVelocityY(-MaxSpeed * clamp(yDiff/inchesMaxSpeed, -1, 1))
+            //     .withRotationalRate(-MaxAngularRate * clamp(yawDiff/inchesMaxSpeed, -1, 1))
+            //     ).schedule();
+        }
+
+        else {
+            swerve.applyRequest(() -> drive.withVelocityX(0)
+                .withVelocityY(0)
+                .withRotationalRate(0)
+                ).schedule();
         }
     }
 
     public void end(boolean interrupted) {
+        // swerve.applyRequest(() -> drive.withVelocityX(0)
+        //         .withVelocityY(0)
+        //         .withRotationalRate(0)
+        //         ).schedule();
     }
 
     public boolean isFinished() {
-        return (Math.abs(vision.getFieldX() - xGoal) < 1
-        && Math.abs(vision.getFieldY() - yGoal) < 1
-        && Math.abs(vision.getFieldYaw() - yawGoal) < 1) || vision.getTA() <= 0;
+        return true;
     }
 
     public double clamp(double value, double min, double max) {

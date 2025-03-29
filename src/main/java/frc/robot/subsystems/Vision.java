@@ -71,6 +71,7 @@ public class Vision extends SubsystemBase {
 
     if(llArr.length > 0) {
         SmartDashboard.putNumber("Current ID", tid);
+        SmartDashboard.putNumber("Target Area", ta);
         SmartDashboard.putNumber("Distance", getDistance());
         SmartDashboard.putNumber("X", fieldX);
         SmartDashboard.putNumber("Y", fieldY);
