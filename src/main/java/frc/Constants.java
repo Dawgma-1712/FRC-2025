@@ -47,5 +47,19 @@ public class Constants {
         public static final int rotation_kP = 7;
         public static final int rotation_kI = 0;
         public static final int rotation_kD = 0;
+
+        public static final Double[] id_Blue = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0};
+    public static final Double[] id_Red = {13.0, 12.0, 16.0, 15.0, 14.0, 19.0, 18.0, 17.0, 22.0, 21.0, 20.0};
+
+    public static final double yDisplace = 0;
+    public static final double llAngle = 0;
+
+    public static final int idsLength = 22;
+
+    public static final double[] aprilTagX = {657.37, 657.37, 455.15, 365.20, 365.20, 530.49, 546.87, 530.49, 497.77, 481.39, 497.77, 33.51, 33.51, 235.73, 325.68, 325.68, 160.39, 144.00, 160.39, 193.10, 209.49, 193.10};
+    public static final double[] goalX = {-12, -12, -12, -12, -12, -12, 12, 12, -12, -12, -12, -12, -12, -12, -12, -12};
+    public static final double[] aprilTagY = {25.8, 291.2, 317.15, 241.64, 75.39, 130.17, 158.5, 186.83, 186.83, 158.5, 130.17, 291.2, 25.8, -0.15, 75.39, 241.64, 186.83, 158.5, 130.17, 130.17, 158.5, 186.83};
+    public static final double[] aprilTagZ = {58.5, 58.5, 51.25, 73.54, 73.54, 12.13, 12.13, 12.13, 12.13, 12.13, 12.13, 58.5, 58.5, 51.25, 73.54, 73.54, 12.13, 12.13, 12.13, 12.13, 12.13, 12.13};
+    public static final double[] aprilTagYaw = {126, 234, 270, 0, 0, 300, 0, 60, 120, 180, 240, 306, 54, 90, 180, 180, 120, 180, 240, 300, 0, 60};
     }
 }

@@ -56,6 +56,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain;
     
     // subsystems
+    
     public final Intaker intaker = new Intaker();
     public final IntakeAngle intakeAngle = new IntakeAngle();
     public final Crossbow crossbow = new Crossbow();
@@ -66,6 +67,7 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
+    private final Vision limelight = new Vision();
     public RobotContainer() {
         SmartDashboard.putNumber("Wait Time", 0);
         drivetrain = TunerConstants.createDrivetrain();
@@ -132,6 +134,8 @@ public class RobotContainer {
         //ACTUALLY USEFUL
         new JoystickButton(driver, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
         new JoystickButton(driver, 4).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
+
+        new JoystickButton(driver, 5).whileTrue(new AutoAlign(drivetrain, limelight));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
         new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.15)).onFalse(new SwerveSlowMode(1));
