@@ -139,7 +139,7 @@ public class RobotContainer {
         new JoystickButton(driver, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
         new JoystickButton(driver, 4).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
 
-        //new JoystickButton(driver, 5).whileTrue(new AutoAlign(drivetrain, limelight));
+        new JoystickButton(driver, 5).whileTrue(new AlignToReefTagRelative(drivetrain));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
         new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.15)).onFalse(new SwerveSlowMode(1));

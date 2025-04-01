@@ -61,5 +61,19 @@ public class Constants {
     public static final double[] aprilTagY = {25.8, 291.2, 317.15, 241.64, 75.39, 130.17, 158.5, 186.83, 186.83, 158.5, 130.17, 25,8, 291.2, 241.64, 75.39, -0.15, 130.17, 158.5, 186.83, 186.83, 158.5, 130.17};
     public static final double[] aprilTagZ = {58.5, 58.5, 51.25, 73.54, 73.54, 12.13, 12.13, 12.13, 12.13, 12.13, 12.13, 58.5, 58.5, 73.54, 73.54, 51.25, 12.13, 12.13, 12.13, 12.13, 12.13, 12.13};
     public static final double[] aprilTagYaw = {126, 234, 270, 0, 0, 300, 0, 60, 120, 180, 240, 54, 306, 180, 180, 90, 240, 180, 120, 60, 0, 300};
+
+    public static final double X_REEF_ALIGNMENT_P = 0.0; //2.0
+	public static final double Y_REEF_ALIGNMENT_P = 2.0; //2.0
+	public static final double ROT_REEF_ALIGNMENT_P = 0.075;//0.075
+
+	public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
+	public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 0.5;
+	public static final double X_SETPOINT_REEF_ALIGNMENT = -1.5;  // Vertical pose
+	public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.02;
+	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0;  // Horizontal pose
+	public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.02;
+
+	public static final double DONT_SEE_TAG_WAIT_TIME = 0.5;
+	public static final double POSE_VALIDATION_TIME = 0.3;
     }
 }

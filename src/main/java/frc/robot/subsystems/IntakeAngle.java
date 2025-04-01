@@ -38,7 +38,7 @@ public class IntakeAngle extends SubsystemBase {
     public void PIDPosition(double position) {
         //0 is straight up
         PositionVoltage pVoltage = new PositionVoltage(0).withSlot(0);
-        armMotor.setControl(pVoltage.withPosition(position / 3.6).withFeedForward(0));
+        armMotor.setControl(pVoltage.withPosition(position / 3.6).withFeedForward(-0.1 * getPosition() / 55.0));
     }
 
     public void moveToPosition(double position) {
