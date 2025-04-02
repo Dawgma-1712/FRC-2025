@@ -63,8 +63,8 @@ public class Constants {
     public static final double[] aprilTagYaw = {126, 234, 270, 0, 0, 300, 0, 60, 120, 180, 240, 54, 306, 180, 180, 90, 240, 180, 120, 60, 0, 300};
 
     public static final double X_REEF_ALIGNMENT_P = 0.0; //2.0
-	public static final double Y_REEF_ALIGNMENT_P = 2.0; //2.0
-	public static final double ROT_REEF_ALIGNMENT_P = 0.075;//0.075
+	public static final double Y_REEF_ALIGNMENT_P = 1.0; //2.0
+	public static final double ROT_REEF_ALIGNMENT_P = 0.0;//0.075
 
 	public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
 	public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 0.5;
