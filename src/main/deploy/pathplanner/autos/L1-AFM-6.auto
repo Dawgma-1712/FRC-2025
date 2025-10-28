@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L_GetAlgaeFM"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L2Dereef"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Left Acquire",
+  "choreoAuto": false
+}
