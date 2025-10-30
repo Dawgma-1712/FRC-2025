@@ -2,6 +2,9 @@ package frc;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public class Constants {
     public static class OperatorConstants {
 
@@ -38,6 +41,27 @@ public class Constants {
         // Climber constants
         public static final double climberAngle = 90;
         public static final double increaseAmount = 1;
+
+        //Target Poses constants
+        public static final Pose2d blueCMAlgae = new Pose2d(3.231,4.010,Rotation2d.fromDegrees(-56.135));
+        public static final Pose2d blueCRAlgae = new Pose2d(3.862,2.943,Rotation2d.fromDegrees(125.341));
+        public static final Pose2d blueCLAlgae = new Pose2d(3.847,5.077,Rotation2d.fromDegrees(-72.255));
+        public static final Pose2d blueFMAlgae = new Pose2d(5.725,4.025,Rotation2d.fromDegrees(-109.185));
+        public static final Pose2d blueFRAlgae = new Pose2d(5.094,2.943,Rotation2d.fromDegrees(158.949));
+        public static final Pose2d blueFLAlgae = new Pose2d(5.109,5.107,Rotation2d.fromDegrees(136.755));
+
+        public static final Pose2d redCMAlgae = new Pose2d(17.53-3.231,8.03-4.010,Rotation2d.fromDegrees(180+56.135));
+        public static final Pose2d redCRAlgae = new Pose2d(17.53-3.862,8.03-2.943,Rotation2d.fromDegrees(180-125.341));
+        public static final Pose2d redCLAlgae = new Pose2d(17.53-3.847,8.03-5.077,Rotation2d.fromDegrees(180+72.255));
+        public static final Pose2d redFMAlgae = new Pose2d(17.53-5.725,8.03-4.025,Rotation2d.fromDegrees(180+109.185));
+        public static final Pose2d redFRAlgae = new Pose2d(17.53-5.094,8.03-2.943,Rotation2d.fromDegrees(180-158.949));
+        public static final Pose2d redFLAlgae = new Pose2d(17.53-5.109,8.03-5.107,Rotation2d.fromDegrees(180-136.755));
+
+
+
+
+
+
 
         // Auto constants
         public static final int drive_kP = 10;
