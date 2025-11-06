@@ -1,9 +1,11 @@
 package frc;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 
 public class Constants {
     public static class OperatorConstants {
@@ -57,9 +59,13 @@ public class Constants {
         public static final Pose2d redFRAlgae = new Pose2d(17.53-5.094,8.03-2.943,Rotation2d.fromDegrees(180-158.949));
         public static final Pose2d redFLAlgae = new Pose2d(17.53-5.109,8.03-5.107,Rotation2d.fromDegrees(180-136.755));
 
+        public static final Pose2d blueProcessor = new Pose2d(5.975,0.570,Rotation2d.fromDegrees(-90));
+        public static final Pose2d redProcessor = new Pose2d(17.53-5.975,8.03-0.570,Rotation2d.fromDegrees(180+90));
 
 
-
+        //Constraints constant:
+        public static final PathConstraints testingConstraints = new PathConstraints(.3, .4, Units.degreesToRadians(54), Units.degreesToRadians(72));
+        public static final PathConstraints gameConstraints = new PathConstraints(3, 4, Units.degreesToRadians(540), Units.degreesToRadians(720));
 
 
 

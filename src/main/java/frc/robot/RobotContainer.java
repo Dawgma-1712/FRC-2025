@@ -39,6 +39,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.Constants.OperatorConstants;
 import frc.robot.commands.crossbow.*;
+import frc.robot.commands.PathfinderCMD;
 
 public class RobotContainer {
     public static double speed = 1;
@@ -74,10 +75,9 @@ public class RobotContainer {
 
     Pose2d targetPose = new Pose2d(12.4, 5.82, Rotation2d.fromDegrees(-57));
     //If the robot's rotation doesn't match what it is told, it breaks the pathfinder stuff
-    Pose2d blueCMAlgae = new Pose2d(3.231,4.010,Rotation2d.fromDegrees(-56.135));
     
 
-    PathConstraints constraints = new PathConstraints(3, 4, Units.degreesToRadians(540), Units.degreesToRadians(720));
+    PathConstraints constraints = new PathConstraints(.3, .4, Units.degreesToRadians(540), Units.degreesToRadians(720));
 
     public RobotContainer() {
         SmartDashboard.putNumber("Wait Time", 0);
@@ -150,8 +150,8 @@ public class RobotContainer {
         new JoystickButton(driver, 4).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
 
         //new JoystickButton(driver, 5).whileTrue(new AlignToReefTagRelative(drivetrain));
-        //new JoystickButton(driver, 5).onTrue(AutoBuilder.pathfindToPose(targetPose, constraints, 0));
-        new JoystickButton(driver, 5).onTrue(AutoBuilder.pathfindToPose(blueCMAlgae, constraints, 0));
+        new JoystickButton(driver, 5).onTrue(getAutoDereef("CMAlgae"));
+        //new JoystickButton(driver, 5).onTrue(AutoBuilder.pathfindToPose(blueCMAlgae, constraints, 0));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
         new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.15)).onFalse(new SwerveSlowMode(1));
@@ -189,7 +189,25 @@ public class RobotContainer {
         return constraints;
     }
 
+
+    public Command getAutoDereef(String targetPoseName){
+        if (targetPoseName.equals("FMAlgae")||targetPoseName.equals("CLAlgae")||targetPoseName.equals("CRAlgae")){
+            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName), AutoBuilder.buildAuto("L2Dereef"));
+        }
+        else if (targetPoseName.equals("FRAlgae")||targetPoseName.equals("FLAlgae")||targetPoseName.equals("CMAlgae")){
+            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName));
+        }
+        else if (targetPoseName.equals("processor")){
+            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName), AutoBuilder.buildAuto("Score"));
+        }
+        else{
+            return null;
+        }
+        
+    }
+
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(new WaitCommand(SmartDashboard.getNumber("Wait Time", 0)), autoChooser.getSelected());
     }
+
 }
