@@ -72,6 +72,7 @@ public class RobotContainer {
     private final Joystick operator = new Joystick(1);
 
     private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> pathChooser;
 
     Pose2d targetPose = new Pose2d(12.4, 5.82, Rotation2d.fromDegrees(-57));
     //If the robot's rotation doesn't match what it is told, it breaks the pathfinder stuff
@@ -105,6 +106,20 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        pathChooser = new SendableChooser<>();
+
+        pathChooser.setDefaultOption("Processor", getAutoDereef("Processor"));
+
+        pathChooser.addOption("CMAlgae", getAutoDereef("CMAlgae"));
+        pathChooser.addOption("CRAlgae", getAutoDereef("CRAlgae"));
+        pathChooser.addOption("CLAlgae", getAutoDereef("CLAlgae"));
+        pathChooser.addOption("FMAlgae", getAutoDereef("FMAlgae"));
+        pathChooser.addOption("FRAlgae", getAutoDereef("FRAlgae"));
+        pathChooser.addOption("FLAlgae", getAutoDereef("FLAlgae"));
+
+        SmartDashboard.putData("Path Chooser", pathChooser);
+
 
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
@@ -150,7 +165,8 @@ public class RobotContainer {
         new JoystickButton(driver, 4).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
 
         //new JoystickButton(driver, 5).whileTrue(new AlignToReefTagRelative(drivetrain));
-        new JoystickButton(driver, 5).onTrue(getAutoDereef("CMAlgae"));
+
+        new JoystickButton(driver, 5).onTrue(pathChooser.getSelected());
         //new JoystickButton(driver, 5).onTrue(AutoBuilder.pathfindToPose(blueCMAlgae, constraints, 0));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
@@ -192,19 +208,20 @@ public class RobotContainer {
 
     public Command getAutoDereef(String targetPoseName){
         if (targetPoseName.equals("FMAlgae")||targetPoseName.equals("CLAlgae")||targetPoseName.equals("CRAlgae")){
-            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName), AutoBuilder.buildAuto("L2Dereef"));
+            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName)/*, AutoBuilder.buildAuto("L2Dereef")*/);
         }
         else if (targetPoseName.equals("FRAlgae")||targetPoseName.equals("FLAlgae")||targetPoseName.equals("CMAlgae")){
-            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName));
+            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName)); //L3 Dereef, needs more steps
         }
-        else if (targetPoseName.equals("processor")){
-            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName), AutoBuilder.buildAuto("Score"));
+        else if (targetPoseName.equals("Processor")){
+            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName) /*AutoBuilder.buildAuto("Score") */ );
         }
         else{
             return null;
         }
         
     }
+
 
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(new WaitCommand(SmartDashboard.getNumber("Wait Time", 0)), autoChooser.getSelected());

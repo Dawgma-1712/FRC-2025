@@ -32,7 +32,7 @@ public class PathfinderCMD extends Command{
 
         
         public PathfinderCMD(String targetPoseName){
-            targetPoseName=this.targetPoseName;
+            this.targetPoseName = targetPoseName;
 
             if(isBlueSide){
                 CMAlgae = Constants.OperatorConstants.blueCMAlgae; 
@@ -44,7 +44,7 @@ public class PathfinderCMD extends Command{
                 processor = Constants.OperatorConstants.blueProcessor;
             }
             else{
-                CMAlgae = Constants.OperatorConstants.redCMAlgae; 
+                CMAlgae = Constants.OperatorConstants.redCMAlgae;
                 CRAlgae = Constants.OperatorConstants.redCRAlgae;
                 CLAlgae = Constants.OperatorConstants.redCLAlgae;
                 FMAlgae = Constants.OperatorConstants.redFMAlgae;
@@ -74,7 +74,7 @@ public class PathfinderCMD extends Command{
                 case "FLAlgae":
                     targetPose=FLAlgae;
                     break;
-                case "processor":
+                case "Processor":
                     targetPose=processor;
                 default:
                     System.out.println("Invalid Target Pose");
@@ -82,7 +82,7 @@ public class PathfinderCMD extends Command{
             }
             
             //change to gameConstraints in a real game
-            AutoBuilder.pathfindToPose(targetPose, Constants.OperatorConstants.testingConstraints, 0);
+            AutoBuilder.pathfindToPose(targetPose, Constants.OperatorConstants.testingConstraints, 0).schedule();
         }
 
         
