@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.pathfinding.Pathfinder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,9 +38,9 @@ import frc.robot.commands.intake.IntakeCMD;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.*;
+import frc.Constants;
 import frc.Constants.OperatorConstants;
 import frc.robot.commands.crossbow.*;
-import frc.robot.commands.PathfinderCMD;
 
 public class RobotContainer {
     public static double speed = 1;
@@ -109,7 +110,6 @@ public class RobotContainer {
 
         pathChooser = new SendableChooser<>();
 
-        pathChooser.setDefaultOption("Processor", getAutoDereef("Processor"));
 
         pathChooser.addOption("CMAlgae", getAutoDereef("CMAlgae"));
         pathChooser.addOption("CRAlgae", getAutoDereef("CRAlgae"));
@@ -117,8 +117,14 @@ public class RobotContainer {
         pathChooser.addOption("FMAlgae", getAutoDereef("FMAlgae"));
         pathChooser.addOption("FRAlgae", getAutoDereef("FRAlgae"));
         pathChooser.addOption("FLAlgae", getAutoDereef("FLAlgae"));
+        pathChooser.addOption("Processor", getAutoDereef("Processor"));
+
+
+        pathChooser.setDefaultOption("Nearest Reef", getAutoDereef("Reef"));
+
 
         SmartDashboard.putData("Path Chooser", pathChooser);
+        
 
 
         drivetrain.setDefaultCommand(
@@ -166,7 +172,7 @@ public class RobotContainer {
 
         //new JoystickButton(driver, 5).whileTrue(new AlignToReefTagRelative(drivetrain));
 
-        new JoystickButton(driver, 5).onTrue(pathChooser.getSelected());
+        new JoystickButton(driver, 5).onTrue(getAutoDereef("Reef"));
         //new JoystickButton(driver, 5).onTrue(AutoBuilder.pathfindToPose(blueCMAlgae, constraints, 0));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
@@ -207,6 +213,8 @@ public class RobotContainer {
 
 
     public Command getAutoDereef(String targetPoseName){
+
+
         if (targetPoseName.equals("FMAlgae")||targetPoseName.equals("CLAlgae")||targetPoseName.equals("CRAlgae")){
             return new SequentialCommandGroup(new PathfinderCMD(targetPoseName)/*, AutoBuilder.buildAuto("L2Dereef")*/);
         }
@@ -215,6 +223,29 @@ public class RobotContainer {
         }
         else if (targetPoseName.equals("Processor")){
             return new SequentialCommandGroup(new PathfinderCMD(targetPoseName) /*AutoBuilder.buildAuto("Score") */ );
+        }
+        else if(targetPoseName.equals("Reef")){
+            
+            Pose2d CMAlgae = PathfinderCMD.CMAlgae;
+            Pose2d CRAlgae = PathfinderCMD.CRAlgae;
+            Pose2d CLAlgae = PathfinderCMD.CLAlgae;
+            Pose2d FMAlgae = PathfinderCMD.FMAlgae;
+            Pose2d FRAlgae = PathfinderCMD.FRAlgae;
+            Pose2d FLAlgae = PathfinderCMD.FLAlgae;
+
+            Pose2d[] reefs = {CMAlgae, CRAlgae, CLAlgae, FMAlgae, FRAlgae, FLAlgae};
+            Pose2d closestReef = CMAlgae;
+            double minimumDistance=1000000000;
+double distance;
+            for(int i = 0; i<reefs.length; i++){
+                distance = drivetrain.getState().Pose.getTranslation().getDistance(reefs[i].getTranslation());
+                if(distance<minimumDistance){
+                    closestReef=reefs[i];
+                    minimumDistance=distance;
+                }
+                SmartDashboard.putNumber("Distance to " + i, distance);
+            }
+            return AutoBuilder.pathfindToPose(closestReef, Constants.OperatorConstants.testingConstraints, 0);  
         }
         else{
             return null;

@@ -22,36 +22,41 @@ public class PathfinderCMD extends Command{
         private Pose2d targetPose;
         private boolean isBlueSide = DriverStation.getAlliance().orElse(Alliance.Blue)==Alliance.Blue;
         
-        private Pose2d CMAlgae;
-        private Pose2d CRAlgae;
-        private Pose2d CLAlgae;
-        private Pose2d FMAlgae;
-        private Pose2d FRAlgae;
-        private Pose2d FLAlgae;
-        private Pose2d processor;
+        public static Pose2d CMAlgae;
+        public static Pose2d CRAlgae;
+        public static Pose2d CLAlgae;
+        public static Pose2d FMAlgae;
+        public static Pose2d FRAlgae;
+        public static Pose2d FLAlgae;
+        public static Pose2d processor;
 
         
+
+    {
+        if(isBlueSide){
+            CMAlgae = Constants.OperatorConstants.blueCMAlgae; 
+            CRAlgae = Constants.OperatorConstants.blueCRAlgae;
+            CLAlgae = Constants.OperatorConstants.blueCLAlgae;
+            FMAlgae = Constants.OperatorConstants.blueFMAlgae;
+            FRAlgae = Constants.OperatorConstants.blueFRAlgae; 
+            FLAlgae = Constants.OperatorConstants.blueFLAlgae; 
+            processor = Constants.OperatorConstants.blueProcessor;
+        }
+        else{
+            CMAlgae = Constants.OperatorConstants.redCMAlgae;
+            CRAlgae = Constants.OperatorConstants.redCRAlgae;
+            CLAlgae = Constants.OperatorConstants.redCLAlgae;
+            FMAlgae = Constants.OperatorConstants.redFMAlgae;
+            FRAlgae = Constants.OperatorConstants.redFRAlgae; 
+            FLAlgae = Constants.OperatorConstants.redFLAlgae; 
+            processor = Constants.OperatorConstants.redProcessor;
+        }
+    }
+
         public PathfinderCMD(String targetPoseName){
             this.targetPoseName = targetPoseName;
 
-            if(isBlueSide){
-                CMAlgae = Constants.OperatorConstants.blueCMAlgae; 
-                CRAlgae = Constants.OperatorConstants.blueCRAlgae;
-                CLAlgae = Constants.OperatorConstants.blueCLAlgae;
-                FMAlgae = Constants.OperatorConstants.blueFMAlgae;
-                FRAlgae = Constants.OperatorConstants.blueFRAlgae; 
-                FLAlgae = Constants.OperatorConstants.blueFLAlgae; 
-                processor = Constants.OperatorConstants.blueProcessor;
-            }
-            else{
-                CMAlgae = Constants.OperatorConstants.redCMAlgae;
-                CRAlgae = Constants.OperatorConstants.redCRAlgae;
-                CLAlgae = Constants.OperatorConstants.redCLAlgae;
-                FMAlgae = Constants.OperatorConstants.redFMAlgae;
-                FRAlgae = Constants.OperatorConstants.redFRAlgae; 
-                FLAlgae = Constants.OperatorConstants.redFLAlgae; 
-                processor = Constants.OperatorConstants.redProcessor;
-            }
+           
         }
 
         public void initialize(){
