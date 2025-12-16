@@ -104,6 +104,32 @@ public class PathfinderCMD extends Command{
             return true;
         }
 
+        public static Pose2d[] getAllianceReefPoses() {
+            // Check alliance at method call time
+            boolean isBlueSide = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue;
+        
+            if (isBlueSide) {
+                // Return array of Blue Poses (Assuming these are defined in Constants.java)
+                return new Pose2d[]{
+                    Constants.OperatorConstants.blueCMAlgae,
+                    Constants.OperatorConstants.blueCRAlgae,
+                    Constants.OperatorConstants.blueCLAlgae,
+                    Constants.OperatorConstants.blueFMAlgae,
+                    Constants.OperatorConstants.blueFRAlgae,
+                    Constants.OperatorConstants.blueFLAlgae
+                };
+            } else {
+                // Return array of Red Poses
+                return new Pose2d[]{
+                    Constants.OperatorConstants.redCMAlgae,
+                    Constants.OperatorConstants.redCRAlgae,
+                    Constants.OperatorConstants.redCLAlgae,
+                    Constants.OperatorConstants.redFMAlgae,
+                    Constants.OperatorConstants.redFRAlgae,
+                    Constants.OperatorConstants.redFLAlgae
+                };
+            }
+        }
 
     
 }
