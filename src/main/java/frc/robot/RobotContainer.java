@@ -128,6 +128,8 @@ public class RobotContainer {
 
 
         pathChooser.setDefaultOption("Nearest Reef", getAutoDereef("Reef", () -> drivetrain.getState().Pose));
+//we made a thing
+        Command pathToPoseDereef=new SequentialCommandGroup(getAutoDereef("Reef", () -> drivetrain.getState().Pose),autoDereefL2Command);
 
 
         SmartDashboard.putData("Path Chooser", pathChooser);
@@ -158,6 +160,8 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
 
@@ -182,7 +186,7 @@ public class RobotContainer {
 
         //new JoystickButton(driver, 5).whileTrue(new AlignToReefTagRelative(drivetrain));
 
-        new JoystickButton(driver, 5).onTrue(getAutoDereef("Reef", () -> drivetrain.getState().Pose));        //new JoystickButton(driver, 5).onTrue(AutoBuilder.pathfindToPose(blueCMAlgae, constraints, 0));
+        new JoystickButton(driver, 5).onTrue(pathChooser.getSelected());        //new JoystickButton(driver, 5).onTrue(AutoBuilder.pathfindToPose(blueCMAlgae, constraints, 0));
 
         //joystick.start().onTrue(new SwerveSlowMode(0.3)).onFalse(new SwerveSlowMode(1));
         new JoystickButton(driver, 8).onTrue(new SwerveSlowMode(0.15)).onFalse(new SwerveSlowMode(1));
@@ -264,73 +268,51 @@ public class RobotContainer {
     // }
 
 
-    public Command getAutoDereef(String targetPoseName, Supplier<Pose2d> currentPose){
-
-        if (targetPoseName.equals("FMAlgae")||targetPoseName.equals("CLAlgae")||targetPoseName.equals("CRAlgae")){
-            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName)/*, AutoBuilder.buildAuto("L2Dereef")*/);
-        }
-        else if (targetPoseName.equals("FRAlgae")||targetPoseName.equals("FLAlgae")||targetPoseName.equals("CMAlgae")){
-            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName)); //L3 Dereef, needs more steps
-        }
-        else if (targetPoseName.equals("Processor")){
-            return new SequentialCommandGroup(new PathfinderCMD(targetPoseName) /*AutoBuilder.buildAuto("Score") */ );
-        }
-        else if(targetPoseName.equals("Reef")){
-        
-            // --- STEP 1: Create the dynamic Pose2d Supplier ---
-            // This function will be called repeatedly by PathPlanner to get the target.
-            Supplier<Pose2d> dynamicClosestReefSupplier = () -> {
-                
-                // Get the current robot pose (this runs during command execution)
-                Pose2d currentRobotPose = currentPose.get();
+    public Command getAutoDereef(String targetPoseName, Supplier<Pose2d> currentPose) {
+        // defer() runs the code inside the lambda ONLY when the button is pressed
+        return Commands.defer(() -> {
+            String finalTarget = targetPoseName;
     
-                // Get the alliance-correct reef poses (requires PathfinderCMD to have the static getter)
-                // Assuming you implement the static method as described previously.
-                Pose2d[] reefs = PathfinderCMD.getAllianceReefPoses();
-                
-                // Re-run the closest point calculation
-                Pose2d closestReef = reefs[0]; // Initialize to the first element
-                double minimumDistance = Double.MAX_VALUE;
+            // If "Reef" is selected, find the actual name now
+            if (targetPoseName.equals("Reef")) {
+                finalTarget = getClosestReefName(currentPose);
+            }
     
-                for(Pose2d reef : reefs){
-                    double distance = currentRobotPose.getTranslation().getDistance(reef.getTranslation());
-                    if(distance < minimumDistance){
-                        closestReef = reef;
-                        minimumDistance = distance;
-                    }
-                }
-    
-                // Put the distance to the closest reef on the dashboard for debugging
-                SmartDashboard.putNumber("Nearest Reef Distance", minimumDistance);
-                
-                return closestReef;
-            };
-    
-    
-            // --- STEP 2: Return the Dynamic Pathfinding Command ---
-            // Commands.defer() ensures the command is generated at button press time, 
-            // and AutoBuilder takes the dynamic supplier for continuous pathing.
-            Supplier<Command> supplierThing = () -> {
-        
-                // FIX: Only pass the three required parameters for dynamic pathing 
-                // (Pose Supplier, Constraints, Rotation Supplier).
-                Command pathCommand = AutoBuilder.pathfindToPose(
-                    dynamicClosestReefSupplier.get(), 
-                    Constants.OperatorConstants.testingConstraints
-                );
-                
-                // Add the required subsystem using standard WPILib Command methods.
-                return pathCommand;
-                
-            };
-
-            return Commands.defer(supplierThing, Set.of()); 
-        }
-        else{
-            return null;
-        }
+            // Return the specific command sequence for that target
+            if (finalTarget.equals("FMAlgae") || finalTarget.equals("CLAlgae") || finalTarget.equals("CRAlgae")) {
+                return new SequentialCommandGroup(new PathfinderCMD(finalTarget), AutoBuilder.buildAuto("L2Dereef"));
+            } 
+            else if (finalTarget.equals("FRAlgae") || finalTarget.equals("FLAlgae") || finalTarget.equals("CMAlgae")) {
+                return new SequentialCommandGroup(new PathfinderCMD(finalTarget));
+            } 
+            else if (finalTarget.equals("Processor")) {
+                return new SequentialCommandGroup(new PathfinderCMD(finalTarget), AutoBuilder.buildAuto("Score"));
+            } 
+            else {
+                return Commands.none();
+            }
+        }, Set.of(drivetrain)); // Ensures drivetrain is reserved
     }
 
+    public String getClosestReefName(Supplier<Pose2d> currentPose) {
+        Pose2d robotPose = currentPose.get();
+        Pose2d[] reefs = PathfinderCMD.getAllianceReefPoses();
+        String[] names = {"CMAlgae", "CRAlgae", "CLAlgae", "FMAlgae", "FRAlgae", "FLAlgae"};
+    
+        int closestIndex = 0;
+        double minDistance = Double.MAX_VALUE;
+    
+        for (int i = 0; i < reefs.length; i++) {
+            double dist = robotPose.getTranslation().getDistance(reefs[i].getTranslation());
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestIndex = i;
+            }
+        }
+    
+        SmartDashboard.putString("Selected Target Reef", names[closestIndex]);
+        return names[closestIndex];
+    }
 
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(new WaitCommand(SmartDashboard.getNumber("Wait Time", 0)), autoChooser.getSelected());
