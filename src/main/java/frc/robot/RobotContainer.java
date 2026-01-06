@@ -129,7 +129,7 @@ public class RobotContainer {
 
         pathChooser.setDefaultOption("Nearest Reef", getAutoDereef("Reef", () -> drivetrain.getState().Pose));
 //we made a thing
-        Command pathToPoseDereef=new SequentialCommandGroup(getAutoDereef("Reef", () -> drivetrain.getState().Pose),autoDereefL2Command);
+        // Command pathToPoseDereef=new SequentialCommandGroup(getAutoDereef("Reef", () -> drivetrain.getState().Pose),autoDereefL2Command);
 
 
         SmartDashboard.putData("Path Chooser", pathChooser);
@@ -280,13 +280,18 @@ public class RobotContainer {
     
             // Return the specific command sequence for that target
             if (finalTarget.equals("FMAlgae") || finalTarget.equals("CLAlgae") || finalTarget.equals("CRAlgae")) {
-                return new SequentialCommandGroup(new PathfinderCMD(finalTarget), AutoBuilder.buildAuto("L2Dereef"));
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                Command autoDereefL2Command;
+                autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle + 10), new WaitCommand(0.5));
+                Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6).raceWith(new WaitCommand(1.5)), new IntakeCMD(intaker, 0));
+                return new SequentialCommandGroup( /* Commands.print("111111111111111111111111111111111111111111111111111111111111111111111111111"), new PathfinderCMD(finalTarget), Commands.print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"),*/ autoDereefL2Command.raceWith(intakeCommand) , Commands.print("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"));
+                
             } 
             else if (finalTarget.equals("FRAlgae") || finalTarget.equals("FLAlgae") || finalTarget.equals("CMAlgae")) {
                 return new SequentialCommandGroup(new PathfinderCMD(finalTarget));
             } 
             else if (finalTarget.equals("Processor")) {
-                return new SequentialCommandGroup(new PathfinderCMD(finalTarget), AutoBuilder.buildAuto("Score"));
+                return new SequentialCommandGroup(new PathfinderCMD(finalTarget)   , AutoBuilder.buildAuto("Score")  );
             } 
             else {
                 return Commands.none();
