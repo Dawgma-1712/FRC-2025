@@ -280,11 +280,10 @@ public class RobotContainer {
     
             // Return the specific command sequence for that target
             if (finalTarget.equals("FMAlgae") || finalTarget.equals("CLAlgae") || finalTarget.equals("CRAlgae")) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 Command autoDereefL2Command;
                 autoDereefL2Command = new SequentialCommandGroup(new SetIntakeAngleCMD(intakeAngle, OperatorConstants.dereefAngle), new WaitCommand(0.5), new SetIntakeAngleCMD(intakeAngle, OperatorConstants.stowAngle + 10), new WaitCommand(0.5));
                 Command intakeCommand = new SequentialCommandGroup(new IntakeCMD(intaker, -0.6).raceWith(new WaitCommand(1.5)), new IntakeCMD(intaker, 0));
-                return new SequentialCommandGroup( /* Commands.print("111111111111111111111111111111111111111111111111111111111111111111111111111"), new PathfinderCMD(finalTarget), Commands.print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"),*/ autoDereefL2Command.raceWith(intakeCommand) , Commands.print("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"));
+                return new SequentialCommandGroup( new PathfinderCMD(finalTarget).raceWith(Commands.waitSeconds(15)),  autoDereefL2Command.raceWith(intakeCommand) );
                 
             } 
             else if (finalTarget.equals("FRAlgae") || finalTarget.equals("FLAlgae") || finalTarget.equals("CMAlgae")) {

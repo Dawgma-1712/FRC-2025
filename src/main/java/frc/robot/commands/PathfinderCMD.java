@@ -87,8 +87,11 @@ public class PathfinderCMD extends Command{
             }
             
             //change to gameConstraints in a real game
-            AutoBuilder.pathfindToPose(targetPose, Constants.OperatorConstants.testingConstraints, 0).schedule();
+
+            AutoBuilder.pathfindToPose(targetPose, Constants.OperatorConstants.gameConstraints, 0).schedule();
         }
+
+        
 
         
 

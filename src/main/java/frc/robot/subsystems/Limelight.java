@@ -4,19 +4,29 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.Util.RectanglePoseArea;
+import frc.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.RawFiducial;
+
 
 public class Limelight extends SubsystemBase {
   CommandSwerveDrivetrain drivetrain;
@@ -29,6 +39,12 @@ public class Limelight extends SubsystemBase {
   private Pose2d botpose;
   private static final RectanglePoseArea field =
         new RectanglePoseArea(new Translation2d(0.0, 0.0), new Translation2d(16.54, 8.02));
+
+  
+  // StructPublisher<Pose3d> publisher3D = NetworkTableInstance.getDefault().getStructTopic("AprilTag", Pose3d.struct).publish();
+
+  StructArrayPublisher<Pose3d> arrayPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("AprilTagArray", Pose3d.struct).publish();
+
 
   /** Creates a new Limelight. */
   public Limelight(CommandSwerveDrivetrain drivetrain) {
@@ -71,8 +87,31 @@ public class Limelight extends SubsystemBase {
       Pose2d algaePose = drivetrain.getState().Pose;
       algaePose.transformBy(new Transform2d(getAlgaeDistance(), 0, new Rotation2d()));
       drivetrain.setAlgaePose(algaePose);
+
+      arrayPublisher.set(aprilTagsVisible());
     }
   }
+
+
+  public Pose3d[] aprilTagsVisible(){
+    //RawFiducial[] rawFiducials = LimelightHelpers.getRawFiducials("");
+    // Pose3d[] positions = new Pose3d[rawFiducials.length];
+    // for(int i = 0; i<rawFiducials.length; i++){
+    //   int currentID = rawFiducials[i].id;
+    //   positions[i] = new Pose3d(Constants.OperatorConstants.aprilTagX[currentID]/39.37, Constants.OperatorConstants.aprilTagY[currentID]/39.37, Constants.OperatorConstants.aprilTagZ[currentID]/39.37, new Rotation3d(0, 0, Constants.OperatorConstants.aprilTagYaw[currentID]) );
+    // }
+
+    Pose3d[] positions = new Pose3d[Constants.OperatorConstants.aprilTagX.length];
+
+    for(int i = 0; i<Constants.OperatorConstants.aprilTagX.length; i++){
+      positions[i] = new Pose3d(Constants.OperatorConstants.aprilTagX[i]/39.37, Constants.OperatorConstants.aprilTagY[i]/39.37, Constants.OperatorConstants.aprilTagZ[i]/39.37, new Rotation3d(0, 0, Constants.OperatorConstants.aprilTagYaw[i]) );
+    }
+    
+    
+    return positions;
+  }
+
+  
 
   public double getAlgaeDistance() {
     //Hyperbolic regression to determine distance from algae
