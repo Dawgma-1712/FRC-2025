@@ -42,9 +42,8 @@ public class Limelight extends SubsystemBase {
   private static final RectanglePoseArea field = new RectanglePoseArea(new Translation2d(0.0, 0.0),
       new Translation2d(16.54, 8.02));
 
-  // StructPublisher<Pose3d> publisher3D =
-  // NetworkTableInstance.getDefault().getStructTopic("AprilTag",
-  // Pose3d.struct).publish();
+  StructPublisher<Pose3d> publisher3D =
+  NetworkTableInstance.getDefault().getStructTopic("AprilTag", Pose3d.struct).publish();
 
   StructArrayPublisher<Pose3d> arrayPublisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("AprilTagArray", Pose3d.struct).publish();
