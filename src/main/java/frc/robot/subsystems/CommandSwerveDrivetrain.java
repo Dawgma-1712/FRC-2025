@@ -279,10 +279,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+    }
+
+    @Override
+    public void simulationPeriodic() {
         publisher2D.set(getState().Pose);
         publisher3D.set(new Pose3d(getState().Pose));
-
-
     }
 
     private void startSimThread() {

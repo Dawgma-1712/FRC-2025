@@ -781,7 +781,7 @@ public class LimelightHelpers {
     }
 
     /**
-     * Gets the latest raw fiducial/AprilTag detection results from NetworkTables.
+     * Gets the latest raw fiducial/AprilTag detection  results from NetworkTables.
      * 
      * @param limelightName Name/identifier of the Limelight
      * @return Array of RawFiducial objects containing detection details

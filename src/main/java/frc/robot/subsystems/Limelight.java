@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -24,8 +25,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.Util.RectanglePoseArea;
 import frc.Constants;
+import frc.Constants.OperatorConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
+import java.util.ArrayList;
 
 
 public class Limelight extends SubsystemBase {
@@ -87,28 +90,50 @@ public class Limelight extends SubsystemBase {
       Pose2d algaePose = drivetrain.getState().Pose;
       algaePose.transformBy(new Transform2d(getAlgaeDistance(), 0, new Rotation2d()));
       drivetrain.setAlgaePose(algaePose);
-
-      arrayPublisher.set(aprilTagsVisible());
     }
   }
 
+  @Override
+  public void simulationPeriodic() {
+      arrayPublisher.set(aprilTagsVisible());
+  }
+
+  // returns whether an apriltag is visible based on the camera's field of view and the location of the tag
+  public boolean isAprilTagVisible(Pose3d limelightPose, Pose3d tagPose) {
+
+      Transform3d tagToLimelight = new Transform3d(limelightPose, tagPose).inverse();
+
+      if (tagToLimelight.getX() <= 0) return false;  // if the tag is behind the limelight it's not visible
+
+      double yaw   = Math.atan2(tagToLimelight.getY(), tagToLimelight.getX());
+      double pitch = Math.atan2(tagToLimelight.getZ(), tagToLimelight.getX());
+
+      boolean inFov = Math.abs(yaw) < OperatorConstants.LIMELIGHT_HORIZONTAL_FOV / 2 &&
+      Math.abs(pitch) < OperatorConstants.LIMELIGHT_VERTICAL_FOV / 2;
+
+      return inFov;
+  }
 
   public Pose3d[] aprilTagsVisible(){
-    //RawFiducial[] rawFiducials = LimelightHelpers.getRawFiducials("");
-    // Pose3d[] positions = new Pose3d[rawFiducials.length];
-    // for(int i = 0; i<rawFiducials.length; i++){
-    //   int currentID = rawFiducials[i].id;
-    //   positions[i] = new Pose3d(Constants.OperatorConstants.aprilTagX[currentID]/39.37, Constants.OperatorConstants.aprilTagY[currentID]/39.37, Constants.OperatorConstants.aprilTagZ[currentID]/39.37, new Rotation3d(0, 0, Constants.OperatorConstants.aprilTagYaw[currentID]) );
-    // }
 
-    Pose3d[] positions = new Pose3d[Constants.OperatorConstants.aprilTagX.length];
+    Pose3d robotPose = new Pose3d(drivetrain.getState().Pose);
+    Transform3d robotToCamera = OperatorConstants.LIMELIGHT_TO_ROBOT;
+    Pose3d limelightPose = robotPose.transformBy(robotToCamera);
+
+    ArrayList<Pose3d> positions = new ArrayList<Pose3d>();
 
     for(int i = 0; i<Constants.OperatorConstants.aprilTagX.length; i++){
-      positions[i] = new Pose3d(Constants.OperatorConstants.aprilTagX[i]/39.37, Constants.OperatorConstants.aprilTagY[i]/39.37, Constants.OperatorConstants.aprilTagZ[i]/39.37, new Rotation3d(0, 0, Constants.OperatorConstants.aprilTagYaw[i]) );
+
+      Pose3d tagPose = new Pose3d(Constants.OperatorConstants.aprilTagX[i]/39.37, Constants.OperatorConstants.aprilTagY[i]/39.37, Constants.OperatorConstants.aprilTagZ[i]/39.37, new Rotation3d(0, 0, Constants.OperatorConstants.aprilTagYaw[i]) );
+      
+      if(isAprilTagVisible(limelightPose, tagPose)) {
+        positions.add(tagPose);
+      }
+      
     }
     
-    
-    return positions;
+    Pose3d[] positions_array = positions.toArray(new Pose3d[0]);
+    return positions_array;
   }
 
   

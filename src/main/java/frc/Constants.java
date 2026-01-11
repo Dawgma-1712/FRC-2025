@@ -5,6 +5,9 @@ import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 public class Constants {
@@ -116,5 +119,9 @@ public class Constants {
 
 	public static final double DONT_SEE_TAG_WAIT_TIME = 0.5;
 	public static final double POSE_VALIDATION_TIME = 0.3;
+
+    public static final Transform3d LIMELIGHT_TO_ROBOT = new Transform3d(new Translation3d(0.5, 0, 0.5), new Rotation3d());
+    public static final double LIMELIGHT_HORIZONTAL_FOV = 62.5;  // in degrees
+    public static final double LIMELIGHT_VERTICAL_FOV = 48.9;  // in degrees
     }
 }
