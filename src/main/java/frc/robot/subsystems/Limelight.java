@@ -30,7 +30,6 @@ import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
 import java.util.ArrayList;
 
-
 public class Limelight extends SubsystemBase {
   CommandSwerveDrivetrain drivetrain;
   Alliance alliance;
@@ -40,14 +39,15 @@ public class Limelight extends SubsystemBase {
   private int fieldError = 0;
   private int distanceError = 0;
   private Pose2d botpose;
-  private static final RectanglePoseArea field =
-        new RectanglePoseArea(new Translation2d(0.0, 0.0), new Translation2d(16.54, 8.02));
+  private static final RectanglePoseArea field = new RectanglePoseArea(new Translation2d(0.0, 0.0),
+      new Translation2d(16.54, 8.02));
 
-  
-  // StructPublisher<Pose3d> publisher3D = NetworkTableInstance.getDefault().getStructTopic("AprilTag", Pose3d.struct).publish();
+  // StructPublisher<Pose3d> publisher3D =
+  // NetworkTableInstance.getDefault().getStructTopic("AprilTag",
+  // Pose3d.struct).publish();
 
-  StructArrayPublisher<Pose3d> arrayPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("AprilTagArray", Pose3d.struct).publish();
-
+  StructArrayPublisher<Pose3d> arrayPublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("AprilTagArray", Pose3d.struct).publish();
 
   /** Creates a new Limelight. */
   public Limelight(CommandSwerveDrivetrain drivetrain) {
@@ -59,10 +59,10 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     if (enable) {
-      Double targetDistance = LimelightHelpers.getTargetPose3d_CameraSpace(ll).getTranslation().getDistance(new Translation3d());
+      Double targetDistance = LimelightHelpers.getTargetPose3d_CameraSpace(ll).getTranslation()
+          .getDistance(new Translation3d());
       Double confidence = 1 - ((targetDistance - 1) / 6);
-      LimelightHelpers.LimelightResults result =
-          LimelightHelpers.getLatestResults(ll);
+      LimelightHelpers.LimelightResults result = LimelightHelpers.getLatestResults(ll);
       if (result.valid) {
         botpose = LimelightHelpers.getBotPose2d_wpiBlue(ll);
         if (field.isPoseWithinArea(botpose)) {
@@ -85,7 +85,6 @@ public class Limelight extends SubsystemBase {
         }
       }
 
-      
       SmartDashboard.putNumber("Distance to Algae", getAlgaeDistance());
       Pose2d algaePose = drivetrain.getState().Pose;
       algaePose.transformBy(new Transform2d(getAlgaeDistance(), 0, new Rotation2d()));
@@ -95,26 +94,35 @@ public class Limelight extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-      arrayPublisher.set(aprilTagsVisible());
+    arrayPublisher.set(aprilTagsVisible());
   }
 
-  // returns whether an apriltag is visible based on the camera's field of view and the location of the tag
+  // returns whether an apriltag is visible based on the camera's field of view
+  // and the location of the tag
   public boolean isAprilTagVisible(Pose3d limelightPose, Pose3d tagPose) {
 
-      Transform3d tagToLimelight = new Transform3d(limelightPose, tagPose).inverse();
+    Transform3d tagToLimelight = new Transform3d(limelightPose, tagPose).inverse();
 
-      if (tagToLimelight.getX() <= 0) return false;  // if the tag is behind the limelight it's not visible
+    if (tagToLimelight.getX() <= 0)
+      return false; // if the tag is behind the limelight it's not visible
 
-      double yaw   = Math.atan2(tagToLimelight.getY(), tagToLimelight.getX());
-      double pitch = Math.atan2(tagToLimelight.getZ(), tagToLimelight.getX());
+    double distance = Math.sqrt(
+        tagToLimelight.getX() * tagToLimelight.getX() +
+            tagToLimelight.getY() * tagToLimelight.getY());
 
-      boolean inFov = Math.abs(yaw) < OperatorConstants.LIMELIGHT_HORIZONTAL_FOV / 2 &&
-      Math.abs(pitch) < OperatorConstants.LIMELIGHT_VERTICAL_FOV / 2;
+    if (distance >= OperatorConstants.LIMELIGHT_RANGE)
+      return false;
 
-      return inFov;
+    double yaw = Math.atan2(tagToLimelight.getY(), tagToLimelight.getX());
+    double pitch = Math.atan2(tagToLimelight.getZ(), tagToLimelight.getX());
+
+    boolean inFov = Math.abs(yaw) < OperatorConstants.LIMELIGHT_HORIZONTAL_FOV / 2 &&
+        Math.abs(pitch) < OperatorConstants.LIMELIGHT_VERTICAL_FOV / 2;
+
+    return inFov;
   }
 
-  public Pose3d[] aprilTagsVisible(){
+  public Pose3d[] aprilTagsVisible() {
 
     Pose3d robotPose = new Pose3d(drivetrain.getState().Pose);
     Transform3d robotToCamera = OperatorConstants.LIMELIGHT_TO_ROBOT;
@@ -122,25 +130,27 @@ public class Limelight extends SubsystemBase {
 
     ArrayList<Pose3d> positions = new ArrayList<Pose3d>();
 
-    for(int i = 0; i<Constants.OperatorConstants.aprilTagX.length; i++){
+    for (int i = 0; i < Constants.OperatorConstants.aprilTagX.length; i++) {
 
-      Pose3d tagPose = new Pose3d(Constants.OperatorConstants.aprilTagX[i]/39.37, Constants.OperatorConstants.aprilTagY[i]/39.37, Constants.OperatorConstants.aprilTagZ[i]/39.37, new Rotation3d(0, 0, Constants.OperatorConstants.aprilTagYaw[i]) );
-      
-      if(isAprilTagVisible(limelightPose, tagPose)) {
+      Pose3d tagPose = new Pose3d(
+          Constants.OperatorConstants.aprilTagX[i] / OperatorConstants.INCHES_PER_METER,
+          Constants.OperatorConstants.aprilTagY[i] / OperatorConstants.INCHES_PER_METER,
+          Constants.OperatorConstants.aprilTagZ[i] / OperatorConstants.INCHES_PER_METER,
+          new Rotation3d(0, 0, Constants.OperatorConstants.aprilTagYaw[i]));
+
+      if (isAprilTagVisible(limelightPose, tagPose)) {
         positions.add(tagPose);
       }
-      
+
     }
-    
+
     Pose3d[] positions_array = positions.toArray(new Pose3d[0]);
     return positions_array;
   }
 
-  
-
   public double getAlgaeDistance() {
-    //Hyperbolic regression to determine distance from algae
-    return 259.2271/(LimelightHelpers.getTA("") + 1.5577);
+    // Hyperbolic regression to determine distance from algae
+    return 259.2271 / (LimelightHelpers.getTA("") + 1.5577);
   }
 
   public void setAlliance(Alliance alliance) {
