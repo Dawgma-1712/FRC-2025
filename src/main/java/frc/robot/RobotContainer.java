@@ -4,47 +4,52 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
-// auto imports
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.util.Set;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.pathfinding.Pathfinder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
+// auto imports
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.Constants.OperatorConstants;
+import frc.robot.commands.AutoLock;
+import frc.robot.commands.DetectAutoDereefCommand;
+import frc.robot.commands.PathfinderCMD;
+import frc.robot.commands.SwerveSlowMode;
 import frc.robot.commands.climber.ManualClimbing;
+import frc.robot.commands.crossbow.CrossbowPositionCMD;
+import frc.robot.commands.crossbow.ManualCrossbowCMD;
+import frc.robot.commands.intake.IntakeAngleCMD;
+import frc.robot.commands.intake.IntakeCMD;
 import frc.robot.commands.intake.ManualAngleCMD;
 import frc.robot.commands.intake.SetIntakeAngleCMD;
 import frc.robot.commands.intake.ZeroIntake;
-import frc.robot.commands.intake.IntakeAngleCMD;
-import frc.robot.commands.intake.IntakeCMD;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj2.command.button.*;
-import frc.Constants;
-import frc.Constants.OperatorConstants;
-import frc.robot.commands.crossbow.*;
+import frc.robot.subsystems.Climbing;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Crossbow;
+import frc.robot.subsystems.IntakeAngle;
+import frc.robot.subsystems.Intaker;
+import frc.robot.subsystems.Limelight;
+
 
 public class RobotContainer {
     public static double speed = 1;
@@ -84,6 +89,9 @@ public class RobotContainer {
 
     Pose2d targetPose = new Pose2d(12.4, 5.82, Rotation2d.fromDegrees(-57));
     //If the robot's rotation doesn't match what it is told, it breaks the pathfinder stuff
+
+
+    Pose2d hub = new Pose2d(4.636, 4.025, Rotation2d.fromDegrees(0));
     
 
     PathConstraints constraints = new PathConstraints(.3, .4, Units.degreesToRadians(540), Units.degreesToRadians(720));
@@ -128,9 +136,6 @@ public class RobotContainer {
 
 
         pathChooser.setDefaultOption("Nearest Reef", getAutoDereef("Reef", () -> drivetrain.getState().Pose));
-//we made a thing
-        // Command pathToPoseDereef=new SequentialCommandGroup(getAutoDereef("Reef", () -> drivetrain.getState().Pose),autoDereefL2Command);
-
 
         SmartDashboard.putData("Path Chooser", pathChooser);
 
@@ -180,6 +185,16 @@ public class RobotContainer {
         // new POVButton(operator, 180).whileTrue(new ManualClimbing(climbing, false));
         // new JoystickButton(driver,6).toggleOnTrue(new ClimbingCMD(climbing, OperatorConstants.climberAngle));
 
+        new JoystickButton(driver, 6).whileTrue(
+            new AutoLock(
+                drivetrain,
+                hub, // auto lock target set to hub pose2d in actual 2026 robot code
+                () -> Math.abs(-driver.getRawAxis(1)) > 0.2 ? -driver.getRawAxis(1) * MaxSpeed * speed : 0, //x supplier
+                () -> Math.abs(-driver.getRawAxis(0)) > 0.2 ? -driver.getRawAxis(0) * MaxSpeed * speed : 0 //y supplier
+            )
+        );
+
+
         //ACTUALLY USEFUL
         new JoystickButton(driver, 2).onTrue(new ManualClimbing(climbing, false, 0.5)).onFalse(new ManualClimbing(climbing, false, 0));
         new JoystickButton(driver, 4).onTrue(new ManualClimbing(climbing, true, -0.5)).onFalse(new ManualClimbing(climbing, false, 0));
@@ -224,48 +239,6 @@ public class RobotContainer {
         return constraints;
     }
 
-
-    // public Command getAutoDereef(String targetPoseName, Supplier<Pose2d> currentPose){
-
-
-    //     if (targetPoseName.equals("FMAlgae")||targetPoseName.equals("CLAlgae")||targetPoseName.equals("CRAlgae")){
-    //         return new SequentialCommandGroup(new PathfinderCMD(targetPoseName)/*, AutoBuilder.buildAuto("L2Dereef")*/);
-    //     }
-    //     else if (targetPoseName.equals("FRAlgae")||targetPoseName.equals("FLAlgae")||targetPoseName.equals("CMAlgae")){
-    //         return new SequentialCommandGroup(new PathfinderCMD(targetPoseName)); //L3 Dereef, needs more steps
-    //     }
-    //     else if (targetPoseName.equals("Processor")){
-    //         return new SequentialCommandGroup(new PathfinderCMD(targetPoseName) /*AutoBuilder.buildAuto("Score") */ );
-    //     }
-    //     else if(targetPoseName.equals("Reef")){
-            
-    //         Pose2d CMAlgae = PathfinderCMD.CMAlgae;
-    //         Pose2d CRAlgae = PathfinderCMD.CRAlgae;
-    //         Pose2d CLAlgae = PathfinderCMD.CLAlgae;
-    //         Pose2d FMAlgae = PathfinderCMD.FMAlgae;
-    //         Pose2d FRAlgae = PathfinderCMD.FRAlgae;
-    //         Pose2d FLAlgae = PathfinderCMD.FLAlgae;
-
-    //         Pose2d[] reefs = {CMAlgae, CRAlgae, CLAlgae, FMAlgae, FRAlgae, FLAlgae};
-    //         Pose2d closestReef = CMAlgae;
-    //         double minimumDistance = 1000000000;
-    //         double distance;
-    //         for(int i = 0; i<reefs.length; i++){
-    //             distance = currentPose.get().getTranslation().getDistance(reefs[i].getTranslation());
-    //             if(distance<minimumDistance){
-    //                 closestReef=reefs[i];
-    //                 minimumDistance=distance;
-    //             }
-    //             SmartDashboard.putNumber("Distance to " + i, distance);
-    //         }
-    //         SmartDashboard.putString("currentPose", currentPose.get().toString());
-    //         return new SequentialCommandGroup(AutoBuilder.pathfindToPose(closestReef, Constants.OperatorConstants.testingConstraints, 0));  
-    //     }
-    //     else{
-    //         return null;
-    //     }
-        
-    // }
 
 
     public Command getAutoDereef(String targetPoseName, Supplier<Pose2d> currentPose) {
