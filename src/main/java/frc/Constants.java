@@ -48,6 +48,11 @@ public class Constants {
 
         public static int blueOffset = 135;
 
+
+        public static final double launcherAngle = 75;
+        public static final double hubHeight = 1.8288;
+        public static final double launcherHeight = 0.75;
+
         // Target Poses constants
 
         // public static final Pose2d blueCMAlgae = new

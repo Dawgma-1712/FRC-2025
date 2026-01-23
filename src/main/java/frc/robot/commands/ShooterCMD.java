@@ -1,9 +1,11 @@
 package frc.robot.commands;
 
-import com.google.flatbuffers.Constants;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command
+;
 import frc.robot.subsystems.Shooter;
+
+import frc.Constants;
 
 public class ShooterCMD extends Command {
     private Shooter shooter; 
@@ -24,8 +26,16 @@ public class ShooterCMD extends Command {
         }
 
     public double findOptimalVelocity(double distance){
-        // double angle = Constants.OperatorConstants.motorAngle;
-        // double velocity = Math.sqrt((9.8*distance*distance)/ ( 2*Math.cos(angle)*Math.cos(angle) * ((distance * Math.tan (angle)) - heightDif ) )  )
+        double angle = Constants.OperatorConstants.launcherAngle;
+
+        double heightDif = Constants.OperatorConstants.hubHeight-Constants.OperatorConstants.launcherHeight;
+
+
+
+        double velocity = Math.sqrt((9.8*distance*distance)/(2*Math.cos(angle)*Math.cos(angle) * ((distance * Math.tan (angle)) - heightDif)));
+
+        return velocity;
+
 
 
     }

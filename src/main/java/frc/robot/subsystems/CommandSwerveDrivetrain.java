@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -258,6 +259,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SmartDashboard.putNumber("Yaw2", getState().Pose.getRotation().getDegrees());
         SmartDashboard.putNumber("X2", getState().Pose.getX());
         SmartDashboard.putNumber("Y2", getState().Pose.getY());
+
+
+        ChassisSpeeds chassisSpeeds = this.getState().Speeds;
+
+
+        double vX = chassisSpeeds.vxMetersPerSecond;
+        double vY = chassisSpeeds.vyMetersPerSecond;
+
+
+        SmartDashboard.putNumber("x veloc", vX);
+        SmartDashboard.putNumber("y veloc", vY);
+
+
         /*
          * Periodically try to apply the operator perspective.
          * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
