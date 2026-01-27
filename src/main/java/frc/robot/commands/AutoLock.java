@@ -22,6 +22,7 @@ public class AutoLock extends Command {
     // Joystick Suppliers
     private final Supplier<Double> xSupplier;
     private final Supplier<Double> ySupplier;
+    //
 
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
 
@@ -97,6 +98,7 @@ public class AutoLock extends Command {
              timeInAir = distance / horizontalVelocity;
         }
 
+    
         // --- MOMENTUM COMPENSATION ---
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(drivetrain.getState().Speeds, drivetrain.getState().Pose.getRotation());
         //test
