@@ -99,6 +99,7 @@ public class AutoLock extends Command {
 
         // --- MOMENTUM COMPENSATION ---
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(drivetrain.getState().Speeds, drivetrain.getState().Pose.getRotation());
+        //test
 
         // FIXED: Removed "if > 0.1" to allow negative velocity compensation
         double offsetX = 0, offsetY = 0;
