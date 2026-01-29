@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "M_GetAlgaeCL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L2Dereef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ScoreAlgaeCL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Middle Score",
+  "choreoAuto": false
+}

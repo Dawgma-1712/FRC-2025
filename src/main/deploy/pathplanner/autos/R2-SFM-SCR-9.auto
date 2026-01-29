@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R_GetAlgaeFM"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L2Dereef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ScoreAlgaeFM"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "P_GetAlgaeCR"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L2Dereef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ScoreAlgaeCR"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Right Score",
+  "choreoAuto": false
+}
