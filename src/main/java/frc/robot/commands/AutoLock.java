@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.Constants;
@@ -22,7 +21,9 @@ public class AutoLock extends Command {
     // Joystick Suppliers
     private final Supplier<Double> xSupplier;
     private final Supplier<Double> ySupplier;
-    //
+
+    // TODO: Ensure this matches your drivetrain's max speed (Meters/Second)
+    private final double MAX_SPEED = 4.5; 
 
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
 
@@ -32,8 +33,10 @@ public class AutoLock extends Command {
         this.xSupplier = xSupplier;
         this.ySupplier = ySupplier;
 
-        // Tune these PID values carefully. 
-        // If output is meant to be Rad/s for Phoenix 6, ensure Kp is sized appropriately.
+        // PID Tuning Note:
+        // Since we convert the output to Radians below, a Kp of 4 on Degrees might be slow.
+        // 10 deg error * 4 = 40. 40 degrees converted to radians is only ~0.7 rad/s.
+        // You might need to increase Kp significantly (try 8-12) or remove the unit conversion.
         this.rotationController = new PIDController(4, 0, 0.02);
         
         this.rotationController.enableContinuousInput(-180, 180); 
@@ -49,10 +52,10 @@ public class AutoLock extends Command {
         double rotateSpeed = rotationController.calculate(currentHeading, goalAngle);
 
         drivetrain.setControl(driveRequest
-            // WARNING: Ensure these suppliers return Meters/Second, not just -1 to 1!
-            .withVelocityX(xSupplier.get()) 
-            .withVelocityY(ySupplier.get()) 
-            .withRotationalRate(Units.degreesToRadians(rotateSpeed)) // Convert PID output (likely degrees) to Radians/Sec for Phoenix 6? Check your tuning units.
+            // Multiplied by MAX_SPEED assuming suppliers return -1 to 1
+            .withVelocityX(xSupplier.get() * MAX_SPEED) 
+            .withVelocityY(ySupplier.get() * MAX_SPEED) 
+            .withRotationalRate(Units.degreesToRadians(rotateSpeed)) 
         );
     }
 
@@ -81,49 +84,50 @@ public class AutoLock extends Command {
         if (Math.abs(angle) != 90 && (distance * Math.tan(angleRad) > heightDif)) {
             launcherVelocity = Math.sqrt((g * Math.pow(distance, 2)) / (2 * Math.pow(Math.cos(angleRad), 2) * (distance * Math.tan(angleRad) - heightDif)));
         } else {
-            // If shot is impossible, just look directly at target (don't compensate)
-            // or aim at a default angle to avoid NaN errors
+            // Fallback: aim directly at target
             double dx = lockTarget.getX() - robotPose.getX();
             double dy = lockTarget.getY() - robotPose.getY();
             return Units.radiansToDegrees(Math.atan2(dy, dx));
         }
 
-        // --- TIME IN AIR FIX ---
-        // Formula: t = d / (v * cos(theta))
+        // --- TIME IN AIR ---
         double horizontalVelocity = launcherVelocity * Math.cos(angleRad);
         double timeInAir = 0;
         
-        // Prevent divide by zero if something went wrong
         if(horizontalVelocity > 0) {
              timeInAir = distance / horizontalVelocity;
         }
 
-    
         // --- MOMENTUM COMPENSATION ---
-        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(drivetrain.getState().Speeds, drivetrain.getState().Pose.getRotation());
-        //test
+        // 1. Get Field Relative Speeds (Robot speeds projected onto the field)
+        ChassisSpeeds fieldRelSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
+            drivetrain.getState().Speeds, 
+            drivetrain.getState().Pose.getRotation()
+        );
 
-        // FIXED: Removed "if > 0.1" to allow negative velocity compensation
-        double offsetX = 0, offsetY = 0;
+        // 2. Calculate the offset based on real velocity (not joystick input)
+        // We use a small deadband (0.1) just to stop jitter when stopped
+        double offsetX = 0;
+        double offsetY = 0;
 
-        if(Math.abs(chassisSpeeds.vxMetersPerSecond)>0.25 && (xSupplier.get()!=0)){
-            offsetX=timeInAir*chassisSpeeds.vxMetersPerSecond;
+        if(Math.abs(fieldRelSpeeds.vxMetersPerSecond) > 0.1) {
+            offsetX = fieldRelSpeeds.vxMetersPerSecond * timeInAir;
         }
-        if(Math.abs(chassisSpeeds.vyMetersPerSecond)>0.25 && (ySupplier.get()!=0)){
-            offsetY=timeInAir*chassisSpeeds.vyMetersPerSecond;
+        if(Math.abs(fieldRelSpeeds.vyMetersPerSecond) > 0.1) {
+            offsetY = fieldRelSpeeds.vyMetersPerSecond * timeInAir;
         }
 
+        // 3. VIRTUAL TARGET CALCULATION
+        // FIX: We SUBTRACT the offset. 
+        // If we are moving East (+X), the ball carries East momentum.
+        // To hit the center, we must aim West (-X) relative to the target.
+        double virtualTargetX = lockTarget.getX() - offsetX;
+        double virtualTargetY = lockTarget.getY() - offsetY;
 
-        // Calculate "Virtual Target" position by subtracting robot motion
-        double distanceX = lockTarget.getX() - robotPose.getX() + offsetX;
-        double distanceY = lockTarget.getY() - robotPose.getY() + offsetY;
+        // 4. Calculate angle to Virtual Target
+        double dx = virtualTargetX - robotPose.getX();
+        double dy = virtualTargetY - robotPose.getY();
 
-        double angleRadRatio = Math.atan2(distanceY, distanceX);
-        return Units.radiansToDegrees(angleRadRatio);
+        return Units.radiansToDegrees(Math.atan2(dy, dx));
     }
-
-    // private double getFieldOffsetX() {
-    //     ChassisSpeeds chassisSpeeds = drivetrain.getState().Speeds;
-    //     double fieldX = chassisSpeeds.
-    // }
 }
