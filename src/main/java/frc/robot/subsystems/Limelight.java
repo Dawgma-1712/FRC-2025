@@ -98,7 +98,7 @@ public class Limelight extends SubsystemBase {
 
   // returns whether an apriltag is visible based on the camera's field of view
   // and the location of the tag
-  public boolean isAprilTagVisible(Pose3d limelightPose, Pose3d tagPose) {
+  public boolean isAprilTagVisible(Pose3d limelightPose, Pose3d tagPose, int tagId) {
     
     // where the tag is relative to the limelight, where the limelight is (0, 0, 0) and the direction it points is the positive x-axis
     Pose3d tagToLimelight = tagPose.relativeTo(limelightPose);
@@ -111,15 +111,16 @@ public class Limelight extends SubsystemBase {
     if (distance >= OperatorConstants.LIMELIGHT_RANGE)
       return false;
 
-    double tagPoseRotationDegrees = Math.toDegrees(tagPose.getRotation().getAngle());
-    double limelightPoseRotationDegrees = Math.toDegrees(limelightPose.getRotation().getAngle());
+    double relativeAngle = Math.toDegrees(tagToLimelight.getRotation().getAngle());
 
-    if (tagPoseRotationDegrees > 180)
-      tagPoseRotationDegrees -= 180;
+    if(relativeAngle >= 180)
+      relativeAngle -= 180;
     else
-      tagPoseRotationDegrees += 180;
+      relativeAngle += 180;
 
-    if (Math.abs(tagPoseRotationDegrees - limelightPoseRotationDegrees) > 60) {
+    SmartDashboard.putNumber("Tag " + tagId + " Angle", relativeAngle);
+
+    if (relativeAngle < 330 && relativeAngle > 30) {
       return false;
     }
 
@@ -148,7 +149,7 @@ public class Limelight extends SubsystemBase {
 
       Pose3d tagPose = OperatorConstants.APRIL_TAG_POSES.getTagPose(i).orElse(new Pose3d());
 
-      if (isAprilTagVisible(limelightPose, tagPose)) {
+      if (isAprilTagVisible(limelightPose, tagPose, i)) {
         positions.add(tagPose);
       }
 
